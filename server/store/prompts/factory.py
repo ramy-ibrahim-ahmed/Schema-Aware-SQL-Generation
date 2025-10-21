@@ -9,19 +9,16 @@ class PromptFactory:
     def __init__(self):
         self.prompt_dir = PROMPT_DIR
         self.prompts = {
-            "chat": self._load_prompt,
-            "chunk": self._load_prompt,
-            "classify": self._load_prompt,
-            "history": self._load_prompt,
-            "ocr": self._load_prompt,
-            "queries": self._load_prompt,
-            "semantic": self._load_prompt,
+            "solve_error": self._load_prompt,
+            "respond": self._load_prompt,
+            "select_relations": self._load_prompt,
+            "generate_sql": self._load_prompt,
         }
 
     def get_prompt(
         self,
         prompt_type: Literal[
-            "chat", "chunk", "classify", "history", "ocr", "queries", "semantic"
+            "solve_error", "respond", "select_relations", "generate_sql"
         ],
     ) -> str:
         if prompt_type not in self.prompts:
