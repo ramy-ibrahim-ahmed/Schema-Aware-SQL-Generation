@@ -1,26 +1,11 @@
-import logging
-from typing import Optional
-
-from langchain_ollama.chat_models import ChatOllama
-from langgraph.graph import MessagesState
-
-DB_PATH = r"lms.db"
-LLM_MODEL = "qwen3:4b"
-MAX_QUERY_RETRIES = 2
-LOG_LEVEL = logging.INFO
-
-logging.basicConfig(level=LOG_LEVEL, format="%(asctime)s - %(levelname)s - %(message)s")
-logging.getLogger("httpx").setLevel(logging.WARNING)
-logger = logging.getLogger(__name__)
+from typing_extensions import TypedDict
 
 
-class State(MessagesState):
-    instruction: Optional[str] = None
-    response: Optional[str] = None
-    schema: Optional[str] = None
+class State(TypedDict):
+    user_message: str
+    relevant_relations: str
+    sql_query: str
+    sql_result: str
+    response: str
+    error_message: str
     error_count: int = 0
-    last_query: Optional[str] = None
-    final_answer: Optional[str] = None
-
-
-LLM = ChatOllama(model=LLM_MODEL, temperature=0.0)
