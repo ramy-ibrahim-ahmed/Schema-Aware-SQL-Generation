@@ -1,0 +1,2259 @@
+{
+    "chunks": [
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_CODE",
+            "description": "Unique identifier for the inventory item, used in ERP systems for tracking stock levels, transactions, and reporting in modules like inventory management, procurement, and sales order processing."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_NAME",
+            "description": "The primary name of the item in the local language, essential for user-friendly identification in ERP interfaces during purchase requisitions, sales quotes, and warehouse operations."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_FOREIGN_NAME",
+            "description": "The item's name in a foreign language, supporting multilingual ERP environments for international trade, export documentation, and global supply chain management."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_DESCRIPTION",
+            "description": "Detailed textual description of the item, utilized in ERP for catalog management, quality control checks, and generating product specifications in manufacturing or sales modules."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_FOREIGN_DESCRIPTION",
+            "description": "Foreign language version of the item description, aiding in cross-border ERP use cases such as international vendor negotiations, compliance reporting, and multilingual customer catalogs."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_UNIT",
+            "description": "The base unit of measure for the item (e.g., each, kg), critical in ERP for accurate quantity calculations in inventory transactions, billing, and material requirement planning (MRP)."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "MAXIMUM_ITEM_UNIT",
+            "description": "The largest allowable unit of measure for the item, used in ERP to enforce packaging constraints during bulk ordering, shipping, and warehouse space optimization."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "MAXIMUM_PARENT_SIZE",
+            "description": "The maximum size of the parent item or container, relevant in ERP for hierarchical item structures like kits or assemblies in production planning and inventory valuation."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEMS_GROUP_CLASS_CODE",
+            "description": "Code representing the item's group classification, enabling ERP grouping for analytics, such as cost analysis by class in financial reporting or procurement strategies."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_GROUP_CLASS_NAME",
+            "description": "Name of the item's group classification, providing readable labels in ERP dashboards for inventory categorization, trend analysis, and group-based access controls."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_ACTIVITY_NUMBER",
+            "description": "Numeric identifier for the item's associated activity, used in ERP to link items to specific processes like manufacturing runs or service activities for cost allocation and performance tracking."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_ACTIVITY_NAME",
+            "description": "Name of the item's associated activity, facilitating ERP reporting on activity-based costing, workflow automation, and integration with project management modules."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "MAIN_GROUP_CODE",
+            "description": "Code for the main group the item belongs to, supporting ERP hierarchical classification for high-level inventory segmentation in budgeting and strategic sourcing."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "MAIN_GROUP_CODE_NAME",
+            "description": "Name of the main group, used in ERP for intuitive navigation in item master data maintenance and group-level sales forecasting."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "SUBGROUP_CODE",
+            "description": "Code for the subgroup within the main group, allowing finer ERP categorization for targeted promotions, stock rotation policies, and subcategory analysis."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "SUBGROUP_CODE_NAME",
+            "description": "Name of the subgroup, enhancing ERP usability in reports like subgroup profitability analysis or vendor performance by subcategory."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "UNDER_SUBGROUP_CODE",
+            "description": "Code for a further subdivided group, enabling deep ERP hierarchical structures for detailed inventory control in large-scale operations like retail chains."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "UNDER_SUBGROUP_CODE_NAME",
+            "description": "Name of the under-subgroup, useful in ERP for precise filtering in queries, such as under-subgroup stock aging reports or compliance audits."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ASISTANT_GROUP_CODE",
+            "description": "Code for an assistant or auxiliary group (likely a typo for \"ASSISTANT\"), used in ERP to assign secondary classifications for cross-functional analysis, like marketing or R&D groupings."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ASISTANT_GROUP_NAME",
+            "description": "Name of the assistant group, supporting ERP in alternative views of inventory data for specialized use cases like product bundling or seasonal campaigns."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DETAIL_GROUP_CODE",
+            "description": "Code for a detailed group level, providing granular ERP classification for micro-level management, such as variant tracking in manufacturing."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DETAIL_GROUP_CODE_NAME",
+            "description": "Name of the detail group, aiding in ERP detailed reporting, like cost breakdowns or quality metrics by detail group."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ALTRNATIVE_GROUP_CODE",
+            "description": "Code for an alternative group (likely a typo for \"ALTERNATIVE\"), allowing ERP flexibility in reclassifying items for scenario planning or market adaptations."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ALTRNATIVE_GROUP_NAME",
+            "description": "Name of the alternative group, used in ERP for comparative analysis, such as alternative grouping impacts on inventory turnover ratios."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_CATEGORY_NUMBER",
+            "description": "Numeric identifier for the item's category, essential for ERP categorization in procurement catalogs, tax calculations, and category-based pricing strategies."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_CATEGORY_NAME",
+            "description": "Name of the item category, facilitating user-friendly ERP searches and reports, like category-wise demand forecasting."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "KIT_ITEM",
+            "description": "Flag indicating if the item is a kit (assembly of components), critical in ERP for bill of materials (BOM) management, kitting processes, and sales order fulfillment."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "USE_EXPIRE_DATE",
+            "description": "Flag for whether the item uses expiration dates, vital in ERP for perishables management, shelf-life tracking, and compliance in industries like food or pharmaceuticals."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "USING_BATCH_NUMBER",
+            "description": "Flag for batch number tracking, used in ERP for quality control, recall management, and traceability in manufacturing and distribution."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "USING_SERIAL_NUMBER",
+            "description": "Flag for serial number tracking, enabling ERP serialization for warranty management, asset tracking, and regulatory compliance in electronics or machinery."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "USING_ITEM_ATTACHMENT",
+            "description": "Flag for attaching documents or files to the item, supporting ERP document management for specs, certifications, or images in procurement and sales."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_PACKAGE_SIZE",
+            "description": "Size of the item's packaging, used in ERP for logistics planning, shipping cost calculations, and warehouse slotting optimization."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_SIZE",
+            "description": "Overall size of the item, relevant in ERP for space allocation in warehouses, transportation planning, and product design integrations."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_AREA",
+            "description": "Calculated area of the item, aiding ERP in floor space management, layout planning, and cost per square unit analysis."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_WEIGHT",
+            "description": "Weight of the item, crucial for ERP freight calculations, inventory handling safety, and weight-based pricing in supply chain modules."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "GLOBAL_TRAD_ITEM_NUMBER_CODE",
+            "description": "Global Trade Item Number (GTIN) code, used in ERP for barcode integration, e-commerce synchronization, and international trade standardization."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "HARMONIZED_SYSTEM_NOMENCLATURE",
+            "description": "Harmonized System (HS) code for customs classification, essential in ERP for import/export compliance, tariff calculations, and global trade reporting."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "MANUFACTURE_CODE",
+            "description": "Code for the manufacturer, linking items to suppliers in ERP for vendor performance tracking, sourcing decisions, and quality audits."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ALTERBATIVE_CODE",
+            "description": "Alternative code for the item (likely a typo for \"ALTERNATIVE\"), providing ERP flexibility for cross-referencing with legacy systems or vendor codes."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "MATERIAL_REQUIREMENT_PLANING",
+            "description": "Flag or code for MRP inclusion, used in ERP to drive demand planning, reorder points, and production scheduling."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DOCUMENT_TYPE",
+            "description": "Type of document associated with the movement (e.g., invoice, receipt), central to ERP transaction processing and audit trails."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DOCUMENT_TYPE_NAME",
+            "description": "Name of the document type, enhancing ERP readability in transaction histories and compliance reports."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "PAYMENT_METHOD",
+            "description": "Method of payment for the transaction, integrated in ERP with accounts payable/receivable for cash flow management and financial reconciliation."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "PAYMENT_METHOD_NAME",
+            "description": "Name of the payment method, used in ERP for filtering reports like payment aging or method-based discount analysis."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DOCUMENT_SUBTYPE",
+            "description": "Subtype of the document (e.g., credit note), allowing ERP nuanced transaction classification for accurate accounting entries."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DOCUMENT_SUBTYPE_NAME",
+            "description": "Name of the document subtype, supporting detailed ERP analytics, such as subtype-specific revenue recognition."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "WAREHOUSE_CODE",
+            "description": "Code for the warehouse where the movement occurs, key in ERP for multi-location inventory control and transfer orders."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "WAREHOUSE_NAME",
+            "description": "Name of the warehouse, providing user-friendly labels in ERP stock queries and location-based reporting."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "WAREHOUSE_GROUP_CODE",
+            "description": "Code for the warehouse group, enabling ERP aggregation for regional stock analysis or group-level replenishment."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "WAREHOUSE_GROUP_NAME",
+            "description": "Name of the warehouse group, used in ERP dashboards for high-level visibility into grouped inventory metrics."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DOCUMENT_DATE",
+            "description": "Date of the document/transaction, critical for ERP time-based reporting, period closing, and historical trend analysis."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "FINANCE_PERIOD_NUMBER",
+            "description": "Numeric identifier for the financial period, linking movements to ERP fiscal calendars for accurate period-end adjustments."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "FINANCE_PERIOD_NAME",
+            "description": "Name of the financial period, facilitating ERP period-specific financial statements and variance analysis."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "INCOMING_OUTGOING",
+            "description": "Indicator for incoming or outgoing movement, fundamental in ERP for stock balance calculations and flow tracking."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "INCOMING_OUTGOING_NAME",
+            "description": "Name describing the incoming/outgoing type, enhancing ERP report interpretability for inventory audits."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_QUANTITY",
+            "description": "Total quantity of the item in the transaction, used in ERP for updating stock levels and quantity-based alerts."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "NET_SALES_QUANTITY",
+            "description": "Net quantity sold after adjustments, key in ERP sales analytics for revenue forecasting and performance metrics."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "INCOMING_QUANTITY",
+            "description": "Quantity received into inventory, supporting ERP receipt processing and vendor delivery evaluations."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "OUTGOING_QUANTITY",
+            "description": "Quantity issued from inventory, integral to ERP for shipment tracking and demand fulfillment."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "FREE_INCOMING_QUANTITY",
+            "description": "Quantity received for free (e.g., samples), used in ERP to track promotional items without affecting cost averages."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "FREE_OUTGOING_QUANTITY",
+            "description": "Quantity issued for free, aiding ERP in managing giveaways or samples in marketing budgets."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "NET_INCOMING_QUANTITY",
+            "description": "Net incoming after deductions, providing ERP accurate net stock inflows for planning."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "NET_OUTGOING_QUANTITY",
+            "description": "Net outgoing after adjustments, essential for ERP net consumption tracking in production."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "AVAILABLE_QUANTITY",
+            "description": "Current available stock quantity, used in ERP for real-time availability checks in order processing."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "STOCK_COST",
+            "description": "Cost of the stock involved, critical for ERP inventory valuation methods like FIFO or average costing."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "VALUE_ADDED_TAX_AMOUNT",
+            "description": "VAT amount on the transaction, integrated in ERP with tax compliance modules for reporting and refunds."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DISCOUNT_AMOUNT",
+            "description": "Total discount applied, used in ERP for pricing strategy analysis and customer loyalty programs."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "OTHER_AMOUNT",
+            "description": "Miscellaneous amounts (e.g., fees), allowing ERP flexibility in capturing non-standard transaction elements."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "OTHER_VALUE_ADDED_TAX_AMOUNT",
+            "description": "VAT on other amounts, ensuring ERP accurate tax calculations on additional charges."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DISCOUNT_AMOUNT_DETAIL",
+            "description": "Detailed breakdown of discount, supporting ERP granular discount tracking for negotiations."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DISCOUNT_AMOUNT_DETAIL_VAT",
+            "description": "VAT on detailed discount, used in ERP for precise tax-inclusive discount reporting."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DISCOUNT_AMOUNT_DETAIL_2",
+            "description": "Second level of discount detail, enabling multi-tier discount structures in ERP sales modules."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DISCOUNT_AMOUNT_DETAIL_2_VAT",
+            "description": "VAT on second discount detail, maintaining ERP tax integrity in complex pricing."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DISCOUNT_AMOUNT_DETAIL_3",
+            "description": "Third level of discount detail, for advanced ERP discount hierarchies in bulk deals."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "DISCOUNT_AMOUNT_DETAIL_3_VAT",
+            "description": "VAT on third discount detail, ensuring comprehensive tax handling in ERP."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ITEM_COST_WAREHOUSE_AVERAGE",
+            "description": "Average cost of the item in the warehouse, used in ERP for moving average valuation and profitability calculations."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "LENGTH_FROM_INITIAL",
+            "description": "Initial length dimension of the item, relevant in ERP for dimensional inventory in industries like textiles."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "WIDTH_FROM_INITIAL",
+            "description": "Initial width dimension, aiding ERP space and packaging optimizations."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "HEIGHT_FROM_INITIAL",
+            "description": "Initial height dimension, used in ERP for volumetric calculations in shipping."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ACCOUNT_DETAIL_TYPE",
+            "description": "Type of account detail, linking inventory to ERP general ledger for financial integration."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "CUSTOMER_CODE",
+            "description": "Code for the customer involved, essential for ERP customer-specific transaction tracking and CRM integration."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "CUSTOMER_NAME",
+            "description": "Name of the customer, providing readable context in ERP sales and delivery reports."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "VENDOR_CODE",
+            "description": "Code for the vendor, key in ERP procurement for supplier management and purchase order linking."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "VENDOR_NAME",
+            "description": "Name of the vendor, used in ERP for vendor performance dashboards."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "COST_CENTER_CODE",
+            "description": "Code for the cost center, enabling ERP cost allocation to departments or projects."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "COST_CENTER_NAME",
+            "description": "Name of the cost center, facilitating cost center-based budgeting in ERP."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "PROJECT_NUMBER",
+            "description": "Numeric identifier for the project, linking items to ERP project management for expense tracking."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "PROJECT_NAME",
+            "description": "Name of the project, used in ERP for project-specific inventory reports."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ACTIVITY_NUMBER",
+            "description": "Number for the activity, supporting activity-based management in ERP."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "ACTIVITY_NAME",
+            "description": "Name of the activity, enhancing ERP workflow and costing analysis."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "EXPIRE_DATE",
+            "description": "Expiration date of the item, critical for ERP expiry alerts and waste minimization."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "BATCH_NUMBER",
+            "description": "Batch identifier, used in ERP for traceability and quality recalls."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "COMPANY_NUMBER",
+            "description": "Numeric code for the company, enabling multi-company ERP setups for consolidated reporting."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "COMPANY_NAME",
+            "description": "Name of the company, providing context in shared ERP environments."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "BRANCH_NUMBER",
+            "description": "Number for the branch, supporting ERP multi-branch operations and localized stock control."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "BRANCH_NAME",
+            "description": "Name of the branch, used in branch-wise performance metrics."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "BRANCH_YEAR",
+            "description": "Year associated with the branch, possibly for fiscal year tracking in ERP."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "BRANCH_USER_",
+            "description": "User associated with the branch (possibly incomplete), for ERP user-level access and audit logs."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "COUNTRY_NUMBER",
+            "description": "Numeric code for the country, essential for ERP international compliance and currency handling."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "COUNTRY_NAME",
+            "description": "Name of the country, aiding in geographic reporting."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "PROVINCE_NUMBER",
+            "description": "Numeric code for the province, used in ERP for regional tax and logistics."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "PROVINCE_NAME",
+            "description": "Name of the province, for location-based analytics."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "CITY_NUMBER",
+            "description": "Numeric code for the city, supporting detailed address management in ERP."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "CITY_NAME",
+            "description": "Name of the city, used in shipping and customer mapping."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "REGION_CODE",
+            "description": "Code for the region, enabling broader geographic grouping in ERP."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "REGION_CODE_NAME",
+            "description": "Name of the region, for regional sales forecasting."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "INCOMING_DATE",
+            "description": "Date of incoming movement, key for ERP receipt timing and vendor evaluation."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "LENGTH_FROM_TRANSACTION",
+            "description": "Transaction-specific length, allowing overrides for variable dimensions in ERP."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "WIDTH_FROM_TRANSACTION",
+            "description": "Transaction-specific width, for accurate per-transaction calculations."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "HEIGHT_FROM_TRANSACTION",
+            "description": "Transaction-specific height, used in dynamic shipping quotes."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "SEASONAL_ITEM",
+            "description": "Flag for seasonal items, aiding ERP in seasonal demand planning and promotions."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "OBJECT_REUSE_EXCHANGE_ITEM",
+            "description": "Flag for reusable or exchangeable items, supporting ERP circular economy tracking and returns management."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "BRAND",
+            "description": "Brand name of the item, essential for ERP brand-specific marketing and inventory segmentation."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "MANUFACTURE_COMPANY",
+            "description": "Name of the manufacturing company, used in ERP for supplier diversification strategies."
+        },
+        {
+            "table_name": "INV_V_ITM_MOVMNT_AI",
+            "column_name": "MANUFACTURE_COUNTRY",
+            "description": "Country of manufacture, critical for ERP compliance with trade regulations and origin labeling."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "DOC_SRL",
+            "description": "Document serial number uniquely identifying each financial posting entry within the ERP system."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "DOC_TYP",
+            "description": "Type of financial document such as journal voucher, payment, or receipt used in the general ledger."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "UNT_NO",
+            "description": "Unit number or business unit associated with the financial transaction."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "AC_CODE",
+            "description": "General ledger account code related to the financial posting."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "AC_L_NM",
+            "description": "Account name in the local language used for reporting purposes."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "AC_F_NM",
+            "description": "Account name in the foreign or system language used in ERP reports."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "AC_TYP",
+            "description": "Specifies the account type such as asset, liability, expense, or revenue."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "IS_OPN_BLNC",
+            "description": "Flag indicating whether this entry is part of the opening balance for the fiscal year."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "IS_CRNCY_DFRNC",
+            "description": "Flag denoting if the posting is related to currency exchange differences."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "AC_CODE_DTL",
+            "description": "Detailed sub-account code for more granular tracking within the chart of accounts."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "AC_DTL_NM",
+            "description": "Name of the detailed sub-account for financial classification."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "AC_DTL_TYP",
+            "description": "Specifies the type of detailed account such as customer, vendor, or bank account."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "CUR_CODE",
+            "description": "Currency code used for the transaction (e.g., USD, EUR)."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "DOC_NO",
+            "description": "Unique document number assigned to the financial transaction."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "DOC_DATE",
+            "description": "Date when the document was issued or created."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "GL_DATE",
+            "description": "General ledger posting date used for accounting period control."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "DOC_TYP_NM",
+            "description": "Description or name of the document type."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "SMAN_CODE",
+            "description": "Salesman or representative code linked to the transaction."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "SMAN_CODE_NM",
+            "description": "Salesman name or description related to the sales entry."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "CLCTR_CODE",
+            "description": "Collector code associated with payment or collection entries."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "CLCTR_CODE_NM",
+            "description": "Collector name associated with the financial transaction."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "REF_NO",
+            "description": "Reference number for cross-linking related financial documents."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "MNL_NO",
+            "description": "Manual number entered by user for document tracking."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "DOC_DESC",
+            "description": "Description or remarks about the financial transaction."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "DR_AMT_L",
+            "description": "Debit amount in local currency."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "DR_AMT_F",
+            "description": "Debit amount in foreign currency."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "CR_AMT_L",
+            "description": "Credit amount in local currency."
+        },
+        {
+            "table_name": "GLS_PST_AI_VW",
+            "column_name": "CR_AMT_F",
+            "description": "Credit amount in foreign currency."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "BRN_NO",
+            "description": "Branch number where the employee is assigned."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "EMP_NO",
+            "description": "Unique employee number used across the ERP system."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "EMP_L_NM",
+            "description": "Employee last name as recorded in HR records."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "EMP_F_NM",
+            "description": "Employee first name as recorded in HR records."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "EMP_STS_NM",
+            "description": "Employee status such as active, suspended, or terminated."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "JOB_NM_NO_NM",
+            "description": "Job title or position name assigned to the employee."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "MNG_NM_NO_NM",
+            "description": "Manager name or ID supervising the employee."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "GRD_NO",
+            "description": "Job grade number defining employee level in the organization."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "GRD_NO_NM",
+            "description": "Job grade description or name."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "EMPLYMNT_TYP_NM",
+            "description": "Type of employment such as full-time, part-time, or contract."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "CRNT_STS_NM",
+            "description": "Current employment status reflecting employee's availability or position."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "NTNLTY_NO",
+            "description": "Nationality code for the employee."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "NTNLTY_NM",
+            "description": "Nationality name or description."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "GNDR_TYP_NM",
+            "description": "Gender of the employee."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "MRTL_STS_NM",
+            "description": "Marital status of the employee."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "RLGN_NM",
+            "description": "Religion of the employee as recorded in HR master data."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "LVL_NO_NM",
+            "description": "Level or grade within the organizational hierarchy."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "CTZN_NO_NM",
+            "description": "Citizenship or national ID type description."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "STRT_WRK_DATE",
+            "description": "Employee start work date."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "GRP_NO",
+            "description": "Group or department number employee belongs to."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "GRP_NO_NM",
+            "description": "Name of the group or department."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "CUR_CODE",
+            "description": "Currency used for employee payroll and compensation."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "NTNL_ID",
+            "description": "Employee national identification number."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "BRTH_AD_DATE",
+            "description": "Employee date of birth."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "END_WRK_DATE",
+            "description": "Date the employee ended work or contract termination date."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "PAY_MTHD",
+            "description": "Payment method such as bank transfer, cash, or cheque."
+        },
+        {
+            "table_name": "GNR_EMP_AI_VW",
+            "column_name": "END_TST_PRD_DATE",
+            "description": "End date of employee's probation or test period."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "TYP_NO",
+            "description": "Type number representing the kind of purchase document."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "DOC_NO",
+            "description": "Unique purchase document number used for supplier invoice tracking."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "DOC_SRL",
+            "description": "Document serial number within the purchasing module."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "DOC_DATE",
+            "description": "Date of purchase invoice issuance."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "MNL_DATE",
+            "description": "Manual entry date entered by user for record adjustment."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "CUR_CODE",
+            "description": "Currency used in the purchase transaction."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "CUR_RATE",
+            "description": "Exchange rate applied for currency conversion at the time of purchase."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "STK_RATE",
+            "description": "Stock rate or valuation rate used for inventory accounting."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "WRHS_CODE",
+            "description": "Warehouse code where purchased goods are received or stored."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "VNDR_CODE",
+            "description": "Vendor code identifying the supplier in the ERP vendor master."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "VNDR_NM",
+            "description": "Vendor or supplier name."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "PYMNT_CSH",
+            "description": "Cash payment amount for the purchase invoice."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "PYMNT_BNK",
+            "description": "Bank payment amount related to supplier transactions."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "PYMNT_CRDT",
+            "description": "Credit payment amount related to supplier transactions."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "TAX_AMT",
+            "description": "Tax amount applied on the purchase invoice."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "TOTL_BILL_AMT",
+            "description": "Total purchase bill amount in foreign currency."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "TOTL_BILL_AMT_LOCAL",
+            "description": "Total purchase bill amount in local currency."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "DOC_DUE_DATE",
+            "description": "Due date for payment of the purchase invoice."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "DOC_DSC",
+            "description": "Purchase document description or remarks."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "CRT_USR",
+            "description": "Username of the user who created the purchase bill record."
+        },
+        {
+            "table_name": "PURCHS_BILL_MST_AI_VW",
+            "column_name": "CRT_DATE",
+            "description": "Creation date of the purchase bill record in the system."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "DOC_NO",
+            "description": "Purchase document number that uniquely identifies each purchase bill header record; used to link item details with the main purchase bill."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "DOC_SRL",
+            "description": "Document serial number used to distinguish multiple documents or transactions under the same document type and year."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "DOC_D_SQ",
+            "description": "Sequential line number of the item within the purchase bill; represents item order in the document."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "YR_NO",
+            "description": "Financial or fiscal year associated with the purchase transaction, used for reporting and accounting purposes."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "UNT_NO",
+            "description": "Unit number representing the business unit, department, or branch responsible for this purchase transaction."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_CODE",
+            "description": "Unique code identifying the purchased item or product in the inventory master list."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_UNT",
+            "description": "Unit of measure (e.g., piece, box, kg) used for the purchased item in this transaction."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_SZ",
+            "description": "Item size or packaging specification that defines the variant or configuration of the purchased item."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "WRHS_CODE",
+            "description": "Warehouse code where the purchased items are received or stored."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "EXP_DATE",
+            "description": "Expiry date of the item, applicable for perishable or time-sensitive goods."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_SGMNT_CNTCT",
+            "description": "Item segment or category reference used for grouping similar products for reporting or cost analysis."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_QTY",
+            "description": "Quantity of the item purchased in this transaction line."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_FREE_QTY",
+            "description": "Quantity of items received free of charge as part of the purchase deal or promotion."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_FREE_QTY_ADD",
+            "description": "Additional free quantity of items added beyond the standard free quantity in the deal."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_FREE_QTY",
+            "description": "Total free quantity combining standard and additional free items for the purchase line."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_MN_QTY",
+            "description": "Main quantity of the purchased item excluding any free quantity or bonus items."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_MN_FREE_QTY",
+            "description": "Free quantity corresponding to the main item in the purchase line."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_MN_FREE_QTY",
+            "description": "Total main free quantity combining all free units associated with the main item."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_PRICE",
+            "description": "Unit price of the purchased item before taxes and discounts."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_STK_CST",
+            "description": "Stock cost or valuation cost of the item for inventory accounting."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TAX_PRCNT",
+            "description": "Tax percentage applied to the item in this purchase line."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TAX_AMT",
+            "description": "Calculated tax amount applied to the item based on the tax percentage."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_OTHR_CHRG_AMT",
+            "description": "Other charge amount applied to this item, such as freight, handling, or service charges."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_DSCNT_AMT",
+            "description": "Discount amount applied to the item based on purchase agreements or promotions."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_DSCNT_AMT_ADD",
+            "description": "Additional discount amount provided beyond the standard discount for this item."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_PRICE",
+            "description": "Total item price before applying any discounts, taxes, or charges (quantity × unit price)."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_DSCNT_AMT",
+            "description": "Total discount amount applied to this item including all types of discounts."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_OTHR_CHRG_AMT",
+            "description": "Total other charges accumulated for the item including freight and handling costs."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_TAX_AMT",
+            "description": "Total tax amount applied to the item after calculation across all applicable tax rates."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_DSCNT_AMT_ADD",
+            "description": "Total of all additional discounts applied to this item."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_AMT",
+            "description": "Final total amount of the item after applying discounts, taxes, and other charges."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_STK_CST",
+            "description": "Total stock cost value of the purchased item line for inventory valuation."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_PRICE_LOCAL",
+            "description": "Total item price converted into local currency for reporting and accounting."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_DSCNT_AMT_LOCAL",
+            "description": "Total discount amount in local currency for this purchase line."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_OTHR_AMT_LOCAL",
+            "description": "Total of other charges in local currency for the item line."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_TAX_AMT_LOCAL",
+            "description": "Total tax amount in local currency for the purchased item."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_DSCNT_AMT_ADD_LOCAL",
+            "description": "Additional discount amount in local currency for the item line."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_AMT_LOCAL",
+            "description": "Final total item amount in local currency including all taxes and charges."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR1_CODE",
+            "description": "Sub-ledger code level 1 used for financial reporting and detailed account tracking."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR2_CODE",
+            "description": "Sub-ledger code level 2 for further breakdown of account or cost center allocation."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR3_CODE",
+            "description": "Sub-ledger code level 3 used for department or sub-account analysis in ERP reports."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR4_CODE",
+            "description": "Sub-ledger code level 4 defining detailed classification for financial and managerial analysis."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR5_CODE",
+            "description": "Sub-ledger code level 5 used to map item-level transactions to sub-categories or divisions."
+        },
+        {
+            "table_name": "PURCHS_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR6_CODE",
+            "description": "Sub-ledger code level 6 providing the most granular level of financial account detail in ERP."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "TYP_NO",
+            "description": "Type number identifying the sales bill transaction category such as cash, credit, or return."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "DOC_NO",
+            "description": "Document number uniquely identifying each sales bill or invoice."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "DOC_SRL",
+            "description": "Document serial number representing the order of sales bills within the same type or branch."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "DOC_DATE",
+            "description": "Official date of the sales bill creation, representing the transaction date."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "MNL_DATE",
+            "description": "Manual entry date if the sales bill date is entered manually instead of system-generated."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CUR_CODE",
+            "description": "Currency code used for the transaction, e.g., USD, EGP, SAR."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CUR_RATE",
+            "description": "Exchange rate applied between the local and foreign currency for the transaction."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "STK_RATE",
+            "description": "Stock valuation rate used for cost or accounting calculations in the sales bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "WRHS_CODE",
+            "description": "Warehouse code from which the goods were sold or delivered."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "UNT_NO",
+            "description": "Unit number or branch identifier related to the sales transaction."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "PYMNT_CSH",
+            "description": "Flag or indicator showing if the payment was made in cash."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "PYMNT_BNK",
+            "description": "Flag or indicator showing if the payment was made via bank transfer."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "PYMNT_CRDT",
+            "description": "Flag indicating if the payment method is on credit terms."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "PYMNT_CPN",
+            "description": "Flag or value showing coupon-based payment usage in the sale."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "PYMNT_AC",
+            "description": "Flag for payment made directly from an account balance or customer ledger."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "PYMNT_POINT_RPLC",
+            "description": "Indicator for payment made using customer loyalty points replacement."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "PYMNT_RPLC",
+            "description": "Indicator for replacement-based payment or credit adjustment."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CSTMR_CODE",
+            "description": "Customer code referencing the client involved in the sales bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CSTMR_NM",
+            "description": "Customer name linked to the sales transaction for billing and reporting."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CSTMR_MOBILE",
+            "description": "Customer mobile number used for contact or verification in sales operations."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "AC_CODE_DTL_SUB_CST",
+            "description": "Account code detail for the customer sub-account used in accounting entries."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CSH_CODE",
+            "description": "Cash account code used for recording cash transactions."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "BNK_CODE",
+            "description": "Bank account code used for recording bank-related sales payments."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "AC_CODE_DTL_SUB_BNK",
+            "description": "Detailed sub-account code linked to the bank ledger for payment tracking."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "AC_CODE",
+            "description": "General ledger account code representing the main account for the sales transaction."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "AC_CODE_DTL",
+            "description": "Detailed account code specifying the financial sub-category of the transaction."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "AC_DTL_TYP",
+            "description": "Type of account detail used for categorizing financial postings."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "AC_CODE_DTL_SUB",
+            "description": "Sub-level account code linked to a more granular accounting entry."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CSH_AMT",
+            "description": "Total cash payment amount received for the sales bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "BNK_AMT",
+            "description": "Total amount received through bank transfer or cheque payments."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CRDT_AMT",
+            "description": "Total amount recorded as credit sales in this bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CPN_AMT",
+            "description": "Total coupon amount applied to the sales bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "AC_AMT",
+            "description": "Total amount recorded under account payments."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "RPLC_AMT",
+            "description": "Amount adjusted due to replacement transactions in the sales bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "POINT_AMT_RPLC",
+            "description": "Amount paid using loyalty points replacement system."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "DOC_AMT",
+            "description": "Total document value before discounts and taxes."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "DSCNT_AMT",
+            "description": "Total discount amount applied to the sales bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "OTHR_AMT",
+            "description": "Other miscellaneous charges or adjustments applied to the bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "TAX_AMT",
+            "description": "Total tax amount calculated for the sales transaction."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "DSCNT_AMT_ADD",
+            "description": "Additional discount amount provided after initial calculation."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "TOTL_BILL_AMT",
+            "description": "Final total bill amount including taxes and charges in foreign currency."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "TOTL_BILL_AMT_LOCAL",
+            "description": "Final total bill amount converted into local currency."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "SMAN_CODE",
+            "description": "Salesman code representing the employee responsible for the sale."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "MRKTR_CODE",
+            "description": "Marketer or promoter code associated with the sales transaction."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CLCTR_CODE",
+            "description": "Collector code for the employee handling payment collection."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "EMP_CODE",
+            "description": "Employee code related to the sales or approval process."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "DOC_DUE_DATE",
+            "description": "Due date for payment completion or delivery related to the sales bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "DOC_DSC",
+            "description": "Description or remarks field for the sales bill transaction."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "REF_NO",
+            "description": "Reference number linking this sales bill to another document such as order or quotation."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "MNL_NO",
+            "description": "Manual document number if the sales bill was manually issued."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "COMM_PRCNT",
+            "description": "Commission percentage applicable to the salesperson or marketer."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "TAX_CTGRY_NO",
+            "description": "Tax category number defining applicable tax rules or rates."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "VRFY_FLG",
+            "description": "Verification flag indicating whether the sales bill was reviewed and approved."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "PST_FLG",
+            "description": "Posting flag showing whether the transaction is posted to the general ledger."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "YR_NO",
+            "description": "Fiscal year number associated with the sales bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CRT_USR",
+            "description": "Username or user ID of the person who created the sales bill."
+        },
+        {
+            "table_name": "SALES_BILL_MST_AI_VW",
+            "column_name": "CRT_DATE",
+            "description": "Date and time when the sales bill record was created in the system."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "DOC_NO",
+            "description": "Unique document number identifying each sales transaction in the ERP system. Links to the main sales bill record."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "DOC_SRL",
+            "description": "Document serial number used to differentiate multiple records under the same sales bill document."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_CODE",
+            "description": "Code of the sold item, referencing the product master to identify the specific item sold in a transaction."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_UNT",
+            "description": "Unit of measure for the sold item, such as piece, box, or kilogram, used for inventory and pricing purposes."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_SZ",
+            "description": "Size or variant of the item being sold, relevant for stock tracking and detailed product differentiation."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "WRHS_CODE",
+            "description": "Warehouse code from which the item is sold or dispatched, used for inventory and stock movement control."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "EXP_DATE",
+            "description": "Expiration date of the sold item, especially relevant for perishable or time-sensitive goods."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_SGMNT_CNTCT",
+            "description": "Item segment or contract reference, indicating the sales agreement or item group linked to this detail line."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_QTY",
+            "description": "Quantity of the item sold in the transaction, excluding any free quantities or promotions."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_FREE_QTY",
+            "description": "Quantity of free items provided in the sale as part of a promotional offer or discount scheme."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_FREE_QTY_ADD",
+            "description": "Additional free quantity beyond the standard offer, often granted for customer loyalty or special deals."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_QTY",
+            "description": "Total quantity of the item sold including free quantities, representing the overall quantity movement."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_FREE_QTY",
+            "description": "Total free quantity of items combined from all promotional or additional offers for the sale."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_MN_QTY",
+            "description": "Main item quantity before conversion or measurement adjustments for multi-unit tracking."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_MN_FREE_QTY",
+            "description": "Main quantity of free items provided based on the primary measurement unit."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_MN_FREE_QTY_ADD",
+            "description": "Additional main free quantity granted on top of the base promotional offer."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_MN_QTY",
+            "description": "Total main quantity, combining regular and free quantities for the transaction line."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_MN_TOTL_MN_FREE_QTY",
+            "description": "Cumulative total of main and free quantities measured in the main unit, used for stock reconciliation."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_PRICE",
+            "description": "Unit price of the item before discounts, taxes, or other adjustments are applied."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_STK_CST",
+            "description": "Stock cost of the item, representing its valuation in inventory or cost of goods sold (COGS)."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TAX_PRCNT",
+            "description": "Applicable tax percentage for the item in the sale, as per the ERP tax configuration."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TAX_AMT",
+            "description": "Tax amount calculated for the item based on its taxable value and applicable tax rate."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_OTHR_CHRG_AMT",
+            "description": "Additional charges applied to the item such as freight, packaging, or handling fees."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_DSCNT_AMT",
+            "description": "Discount amount applied to the item based on sales promotions or negotiated terms."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_DSCNT_AMT_ADD",
+            "description": "Additional discount amount granted beyond the standard discount, often manually approved."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_PRICE",
+            "description": "Total price of the item line before discounts or taxes, calculated as quantity multiplied by unit price."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_DSCNT_AMT",
+            "description": "Total discount amount applied to the item, including base and additional discounts."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_OTHR_CHRG_AMT",
+            "description": "Total amount of other charges applied to the item line, such as service fees or packaging costs."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_TAX_AMT",
+            "description": "Total tax amount calculated on the item after applying discounts and additional charges."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_DSCNT_AMT_ADD",
+            "description": "Sum of additional discounts applied across multiple item levels or promotional schemes."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_AMT",
+            "description": "Final net amount of the item after applying discounts, taxes, and other charges."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_STK_CST",
+            "description": "Total stock cost for the sold quantity of the item, used for cost analysis and inventory tracking."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_PRICE_LOCAL",
+            "description": "Total item price converted to the local currency based on exchange rate settings in the ERP system."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_DSCNT_AMT_LOCAL",
+            "description": "Total discount amount for the item expressed in the local currency."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_OTHR_AMT_LOCAL",
+            "description": "Total other charges amount in local currency for the item transaction."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_TAX_AMT_LOCAL",
+            "description": "Total tax amount for the item in local currency, derived from currency conversion settings."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_DSCNT_AMT_ADD_LOCAL",
+            "description": "Additional discount amount in local currency reflecting manual or promotional adjustments."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_AMT_LOCAL",
+            "description": "Final total amount for the item line in local currency after applying all adjustments."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR1_CODE",
+            "description": "Sub-ledger code level 1 used for financial categorization or reporting in the ERP system."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR2_CODE",
+            "description": "Sub-ledger code level 2 used for detailed accounting or cost center mapping."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR3_CODE",
+            "description": "Third-level sub-ledger code for deeper financial analysis and classification."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR4_CODE",
+            "description": "Fourth-level sub-ledger code supporting granular cost allocation or profit tracking."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR5_CODE",
+            "description": "Fifth-level sub-ledger code for advanced accounting breakdowns within ERP financials."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR6_CODE",
+            "description": "Sixth-level sub-ledger code used for complex financial segmentation or detailed reporting structures."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "EMP_CODE",
+            "description": "Employee code identifying the salesperson or staff member associated with the sale transaction."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "SRVC_FLG",
+            "description": "Flag indicating whether the item is a service rather than a physical product, important for taxation and stock handling."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "DOC_D_SQ",
+            "description": "Document detail sequence number for ordering and referencing line items within a sales bill."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "UNT_NO",
+            "description": "Unit number or business unit identifier where the sales transaction was processed."
+        },
+        {
+            "table_name": "SALES_BILL_DTL_AI_VW",
+            "column_name": "YR_NO",
+            "description": "Fiscal year number associated with the sales document, used for reporting and audit tracking."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "TYP_NO",
+            "description": "Sales return document type number that categorizes the return transaction."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "DOC_NO",
+            "description": "Unique document number identifying the sales return transaction."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "DOC_SRL",
+            "description": "Document serial number used for tracking multiple related sales return entries."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "DOC_DATE",
+            "description": "The official date when the sales return document was created."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "MNL_DATE",
+            "description": "The manual entry date, if the document was manually entered into the system."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "CUR_CODE",
+            "description": "Currency code used for the sales return transaction."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "CUR_RATE",
+            "description": "Exchange rate applied to convert the transaction currency to base currency."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "STK_RATE",
+            "description": "Stock valuation rate used for returned items."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "WRHS_CODE",
+            "description": "Warehouse code where the returned items are received or stored."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "UNT_NO",
+            "description": "Organizational unit number responsible for the transaction."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "PYMNT_CSH",
+            "description": "Flag or indicator showing if cash payment was involved in the return process."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "PYMNT_BNK",
+            "description": "Flag indicating if the return payment was processed through a bank transaction."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "PYMNT_CRDT",
+            "description": "Indicator if a credit payment method was used for the return."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "PYMNT_CPN",
+            "description": "Flag indicating if coupons were used as part of the return transaction."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "PYMNT_AC",
+            "description": "Indicates if account balance adjustments were applied as payment method."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "PYMNT_POINT_RPLC",
+            "description": "Flag indicating if loyalty points were replaced or refunded during the return."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "PYMNT_RPLC",
+            "description": "Indicates if the return was handled by replacing the product rather than refunding."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "CSTMR_CODE",
+            "description": "Unique code identifying the customer returning the goods."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "CSTMR_NM",
+            "description": "Full name of the customer associated with the sales return document."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "CSTMR_MOBILE",
+            "description": "Customer’s mobile number for contact or verification purposes."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "AC_CODE",
+            "description": "General ledger account code linked to the return transaction."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "DSCNT_AMT",
+            "description": "Discount amount applied to the total value of returned goods."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "TAX_AMT",
+            "description": "Total tax amount calculated on the returned items."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "TOTL_BILL_AMT",
+            "description": "Total value of the sales return bill including discounts and taxes."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "TOTL_BILL_AMT_LOCAL",
+            "description": "Total value of the return bill converted into local currency."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "SMAN_CODE",
+            "description": "Code of the salesperson responsible for the original sale or handling the return."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "MRKTR_CODE",
+            "description": "Code representing the marketing staff associated with the sales return."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "EMP_CODE",
+            "description": "Employee code responsible for processing the sales return document."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "DOC_DUE_DATE",
+            "description": "Date by which any pending refund or adjustment related to the return is due."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "RESON_DESC",
+            "description": "Description of the reason for the sales return, such as defect or overdelivery."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "VRFY_FLG",
+            "description": "Flag indicating whether the return document has been verified by finance or audit."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "PST_FLG",
+            "description": "Indicator showing whether the sales return has been posted to the general ledger."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "CRT_USR",
+            "description": "Username of the person who created the sales return entry."
+        },
+        {
+            "table_name": "SALES_RT_BILL_MST_AI_VW",
+            "column_name": "CRT_DATE",
+            "description": "Date when the sales return document was entered into the ERP system."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "DOC_NO",
+            "description": "Unique document number identifying the sales return transaction, linked to the return invoice master record."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "DOC_SRL",
+            "description": "Document serial number used to differentiate between multiple entries or lines under the same sales return document."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_CODE",
+            "description": "Unique code of the returned item as defined in the item master, representing the product or SKU being returned."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_UNT",
+            "description": "Unit of measurement for the returned item, such as pieces, boxes, or kilograms."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_SZ",
+            "description": "Size or variant specification of the returned item, relevant for inventory and pricing differences."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "WRHS_CODE",
+            "description": "Warehouse code indicating where the returned item is stored or processed for restocking."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "EXP_DATE",
+            "description": "Expiration date of the returned item, mainly used for perishable or limited-shelf-life products."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_SGMNT_CNTCT",
+            "description": "Item segment or contact information related to the product category or vendor for analysis and reporting."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_QTY",
+            "description": "Quantity of the item being returned by the customer in the sales return transaction."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_FREE_QTY",
+            "description": "Quantity of free items returned along with the main item, typically part of promotional offers."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_FREE_QTY_ADD",
+            "description": "Additional free quantity of items returned due to special discounts or offers."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_QTY",
+            "description": "Total quantity of the item being returned, combining normal and free quantities."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_FREE_QTY",
+            "description": "Total free quantity of items included in the sales return document."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_MN_QTY",
+            "description": "Main quantity of items returned excluding promotional or free items."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_MN_FREE_QTY",
+            "description": "Main free quantity of items returned related to standard promotional items."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_MN_FREE_QTY_ADD",
+            "description": "Additional main free quantity returned under extended promotions or manual adjustments."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_MN_QTY",
+            "description": "Total main quantity of items returned combining standard and additional units."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_MN_TOTL_MN_FREE_QTY",
+            "description": "Combined total of main and free quantities of the returned items for the document line."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_PRICE",
+            "description": "Unit selling price of the returned item as recorded in the original sales invoice."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_STK_CST",
+            "description": "Stock cost or cost price of the returned item used for inventory valuation."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TAX_PRCNT",
+            "description": "Applicable tax percentage for the returned item based on tax rules or product category."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TAX_AMT",
+            "description": "Tax amount associated with the returned item, recalculated from the taxable value."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_OTHR_CHRG_AMT",
+            "description": "Other charges amount for the item return such as packaging, freight, or handling costs."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_DSCNT_AMT",
+            "description": "Discount amount applied to the item during the original sale, reversed in the return process."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_DSCNT_AMT_ADD",
+            "description": "Additional discount amount applied due to customer loyalty or manual adjustments."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_PRICE",
+            "description": "Total selling price of the returned item before applying discounts and taxes."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_DSCNT_AMT",
+            "description": "Total discount amount for the returned item including base and additional discounts."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_OTHR_CHRG_AMT",
+            "description": "Total of other charges such as shipping, packaging, or service fees linked to the return line item."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_TAX_AMT",
+            "description": "Total tax amount for the returned item line based on tax percentage and taxable value."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_DSCNT_AMT_ADD",
+            "description": "Cumulative total of all additional discounts applied to the item return."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_AMT",
+            "description": "Total net amount for the returned item after applying discounts, taxes, and charges."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_STK_CST",
+            "description": "Total stock cost of returned items for valuation and cost accounting."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_PRICE_LOCAL",
+            "description": "Total selling price of the returned item converted into the local currency."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_DSCNT_AMT_LOCAL",
+            "description": "Total discount amount for the returned item in the local currency equivalent."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_OTHR_AMT_LOCAL",
+            "description": "Total of other charges for the returned item converted into the local currency."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_TAX_AMT_LOCAL",
+            "description": "Total tax amount for the returned item in local currency."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_DSCNT_AMT_ADD_LOCAL",
+            "description": "Additional discount amount for the returned item converted into local currency."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "ITM_TOTL_AMT_LOCAL",
+            "description": "Total net amount for the returned item in local currency after all adjustments."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR1_CODE",
+            "description": "Sub-ledger level 1 code for financial posting related to the return item, linking to accounting control accounts."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR2_CODE",
+            "description": "Sub-ledger level 2 code for detailed financial or departmental classification of the return transaction."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR3_CODE",
+            "description": "Third-level sub-ledger code for analytical accounting or business unit segmentation."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR4_CODE",
+            "description": "Fourth-level sub-ledger code used for project or cost center-level tracking of the return."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR5_CODE",
+            "description": "Fifth-level sub-ledger classification used for deeper accounting granularity of return transactions."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "SUB_LDGR6_CODE",
+            "description": "Sixth-level sub-ledger classification for detailed cost allocation or consolidation reporting."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "DOC_NO_REF_BILL",
+            "description": "Reference document number of the original sales invoice related to this return transaction."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "DOC_SRL_REF_BILL",
+            "description": "Serial number of the referenced original sales invoice document for linkage to the return entry."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "EMP_CODE",
+            "description": "Employee code of the salesperson or staff responsible for processing the sales return."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "SRVC_FLG",
+            "description": "Flag indicating whether the returned item is a service (non-inventory item) or a physical product."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "DOC_D_SQ",
+            "description": "Document detail sequence number representing the order of the line item in the return document."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "UNT_NO",
+            "description": "Unit number identifying the business unit, store, or branch processing the sales return."
+        },
+        {
+            "table_name": "SALES_RT_BILL_DTL_AI_VW",
+            "column_name": "YR_NO",
+            "description": "Financial or fiscal year number associated with the sales return document."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "WORK_ORDER_NO",
+            "description": "Unique identifier for each manufacturing work order used to track production tasks in the ERP system."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "WORK_ORDER_DATE",
+            "description": "Date when the work order was created, used to plan and schedule production activities."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "WORK_ORDER_SOURCE",
+            "description": "Indicates the origin or source of the work order, such as sales orders, forecasts, or manual entry."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "ITEM_CODE",
+            "description": "Code identifying the manufactured item or product linked to the work order."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "ITEM_CLASS",
+            "description": "Category or classification of the item, used for grouping products in production planning."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "WORK_ORDER_QTY",
+            "description": "Total quantity of items planned to be produced in the work order."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "PRODUCT_QTY",
+            "description": "Actual quantity of finished goods produced as per the work order."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "SCRAP_QTY",
+            "description": "Quantity of defective or unusable materials generated during the production process."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "DELIVER_OTY",
+            "description": "Quantity of produced items delivered to inventory or next process stage."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "STANDARD_TIME",
+            "description": "Estimated standard time required to complete the work order based on production planning."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "ACTUAL_TIME",
+            "description": "Actual time taken to complete the work order, used for performance analysis and efficiency tracking."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "BREAKDOWN_TIME",
+            "description": "Duration of production downtime due to equipment breakdowns or operational interruptions."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "MATERIAL_STANDARD_COST",
+            "description": "Planned material cost estimated for the work order as per cost standards."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "MATERIAL_ACTUAL_COST",
+            "description": "Actual material cost incurred during the production of the work order."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "MACHINE_STANDARD_COST",
+            "description": "Estimated machine operating cost defined in the standard cost setup for the work order."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "MACHINE_ACTUAL_COST",
+            "description": "Actual machine operating cost recorded for the work order execution."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "LABOR_STANDARD_COST",
+            "description": "Expected labor cost planned as per standard production cost estimates."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "LABOR_ACTUAL_COST",
+            "description": "Actual labor cost incurred during production operations for the work order."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "INDIRECT_STANDARD_COST",
+            "description": "Estimated overhead cost, including utilities and indirect labor, planned for the work order."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "INDIRECT_ACTUAL_COST",
+            "description": "Actual overhead cost incurred in executing the work order."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "TOTAL_STANDARD_COST",
+            "description": "Sum of all standard cost components (material, labor, machine, and overhead) for the work order."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "TOTAL_ACTUAL_COST",
+            "description": "Total actual cost recorded for completing the work order, used for cost variance analysis."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "UNIT_STANDARD_COST",
+            "description": "Standard cost per unit of the produced item as defined in cost planning."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "UNIT_ACTUAL_COST",
+            "description": "Actual cost per unit of the produced item calculated after production completion."
+        },
+        {
+            "table_name": "MRP_WORK_ORDER_AI_VW",
+            "column_name": "WORK_ORDER_STATUS",
+            "description": "Current status of the work order (e.g., Planned, In Progress, Completed, or Closed)."
+        }
+    ]
+}
