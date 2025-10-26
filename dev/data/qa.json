@@ -1,0 +1,878 @@
+[
+    {
+        "text": "What is the total net sales amount for each customer in the year 2024, including the total quantity sold and discount given, by joining the sales bill master and detail tables?",
+        "sql": "SELECT SBM.CSTMR_CODE, SBM.CSTMR_NM, SUM(SBD.ITM_TOTL_AMT_LOCAL) AS TOTAL_NET_SALES, SUM(SBD.ITM_TOTL_QTY) AS TOTAL_QUANTITY_SOLD, SUM(SBD.ITM_TOTL_DSCNT_AMT_LOCAL) AS TOTAL_DISCOUNT FROM SALES_BILL_MST_AI_VW SBM INNER JOIN SALES_BILL_DTL_AI_VW SBD ON SBM.DOC_NO = SBD.DOC_NO AND SBM.DOC_SRL = SBD.DOC_SRL AND SBM.YR_NO = SBD.YR_NO AND SBM.UNT_NO = SBD.UNT_NO WHERE SBM.DOC_DATE BETWEEN TO_DATE('2024-01-01', 'YYYY-MM-DD') AND TO_DATE('2024-12-31', 'YYYY-MM-DD') GROUP BY SBM.CSTMR_CODE, SBM.CSTMR_NM ORDER BY TOTAL_NET_SALES DESC;"
+    },
+    {
+        "text": "List the top 5 items with the highest outgoing quantity in inventory movements for warehouse code 'WH01', including their total value and average cost, using the inventory movement table.",
+        "sql": "SELECT ITEM_CODE, ITEM_NAME, SUM(OUTGOING_QUANTITY) AS TOTAL_OUTGOING_QUANTITY, SUM(OUTGOING_QUANTITY * STOCK_COST) AS TOTAL_VALUE, AVG(ITEM_COST_WAREHOUSE_AVERAGE) AS AVERAGE_COST FROM INV_V_ITM_MOVMNT_AI WHERE WAREHOUSE_CODE = 'WH01' AND INCOMING_OUTGOING = 'OUT' GROUP BY ITEM_CODE, ITEM_NAME ORDER BY TOTAL_OUTGOING_QUANTITY DESC FETCH FIRST 5 ROWS ONLY;"
+    },
+    {
+        "text": "Calculate the total debit and credit amounts for cash accounts (AC_DTL_TYP = 1) in the general ledger postings for the month of January 2025, grouped by account code.",
+        "sql": "SELECT AC_CODE_DTL, AC_DTL_NM, SUM(DR_AMT_L) AS TOTAL_DEBIT, SUM(CR_AMT_L) AS TOTAL_CREDIT FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 1 AND DOC_DATE BETWEEN TO_DATE('2025-01-01', 'YYYY-MM-DD') AND TO_DATE('2025-01-31', 'YYYY-MM-DD') GROUP BY AC_CODE_DTL, AC_DTL_NM HAVING SUM(DR_AMT_L) > SUM(CR_AMT_L) ORDER BY TOTAL_DEBIT DESC;"
+    },
+    {
+        "text": "Find all employees who started work after January 1, 2023, and are in the 'Sales' group, including their manager's name and nationality, from the employees table.",
+        "sql": "SELECT E1.EMP_NO, E1.EMP_L_NM, E1.MNG_NM_NO_NM AS MANAGER_NAME, E1.NTNLTY_NM AS NATIONALITY FROM GNR_EMP_AI_VW E1 WHERE E1.STRT_WRK_DATE > TO_DATE('2023-01-01', 'YYYY-MM-DD') AND UPPER(E1.GRP_NO_NM) LIKE UPPER('%Sales%') ORDER BY E1.EMP_L_NM;"
+    },
+    {
+        "text": "What is the total purchase amount by vendor for purchases with tax amount greater than 1000, including the average item quantity per bill, by joining purchase bill master and detail?",
+        "sql": "SELECT PBM.VNDR_CODE, PBM.VNDR_NM, SUM(PBM.TOTL_BILL_AMT_LOCAL) AS TOTAL_PURCHASE_AMOUNT, AVG(PBD.ITM_QTY) AS AVERAGE_ITEM_QUANTITY FROM PURCHS_BILL_MST_AI_VW PBM INNER JOIN PURCHS_BILL_DTL_AI_VW PBD ON PBM.DOC_NO = PBD.DOC_NO AND PBM.DOC_SRL = PBD.DOC_SRL AND PBM.YR_NO = PBD.YR_NO AND PBM.UNT_NO = PBD.UNT_NO WHERE PBM.TAX_AMT_LOCAL > 1000 GROUP BY PBM.VNDR_CODE, PBM.VNDR_NM ORDER BY TOTAL_PURCHASE_AMOUNT DESC;"
+    },
+    {
+        "text": "Compare the total sales amount from sales bills and the total return amount from sales return bills for each item in 2024, showing only items where returns exceed 10% of sales.",
+        "sql": "WITH Sales AS (SELECT ITM_CODE, SUM(ITM_TOTL_AMT_LOCAL) AS TOTAL_SALES FROM SALES_BILL_DTL_AI_VW WHERE DOC_DATE BETWEEN TO_DATE('2024-01-01', 'YYYY-MM-DD') AND TO_DATE('2024-12-31', 'YYYY-MM-DD') GROUP BY ITM_CODE), Returns AS (SELECT ITM_CODE, SUM(ITM_TOTL_AMT_LOCAL) AS TOTAL_RETURNS FROM SALES_RT_BILL_DTL_AI_VW WHERE DOC_DATE BETWEEN TO_DATE('2024-01-01', 'YYYY-MM-DD') AND TO_DATE('2024-12-31', 'YYYY-MM-DD') GROUP BY ITM_CODE) SELECT S.ITM_CODE, S.TOTAL_SALES, R.TOTAL_RETURNS FROM Sales S INNER JOIN Returns R ON S.ITM_CODE = R.ITM_CODE WHERE R.TOTAL_RETURNS > 0.1 * S.TOTAL_SALES ORDER BY S.ITM_CODE;"
+    },
+    {
+        "text": "List all completed work orders (status 3) for finished products (item class 1) with a cost variance greater than 10%, including standard vs actual total cost.",
+        "sql": "SELECT WORK_ORDER_NO, ITEM_CODE, TOTAL_STANDARD_COST, TOTAL_ACTUAL_COST, (TOTAL_ACTUAL_COST - TOTAL_STANDARD_COST) / TOTAL_STANDARD_COST * 100 AS COST_VARIANCE_PERCENT FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 3 AND ITEM_CLASS = 1 AND ABS(TOTAL_ACTUAL_COST - TOTAL_STANDARD_COST) / TOTAL_STANDARD_COST > 0.1 ORDER BY COST_VARIANCE_PERCENT DESC;"
+    },
+    {
+        "text": "What is the current stock level for each item in warehouse 'WH02', calculated as net incoming minus net outgoing from inventory movements, including available quantity?",
+        "sql": "SELECT ITEM_CODE, ITEM_NAME, SUM(NET_INCOMING_QUANTITY) - SUM(NET_OUTGOING_QUANTITY) AS CURRENT_STOCK, SUM(AVAILABLE_QUANTITY) AS TOTAL_AVAILABLE FROM INV_V_ITM_MOVMNT_AI WHERE WAREHOUSE_CODE = 'WH02' GROUP BY ITEM_CODE, ITEM_NAME HAVING SUM(NET_INCOMING_QUANTITY) - SUM(NET_OUTGOING_QUANTITY) > 0 ORDER BY CURRENT_STOCK DESC;"
+    },
+    {
+        "text": "Generate a cash flow statement for cash accounts, showing opening balance, total debits, total credits, and closing balance for the fiscal year 2024 from general ledger postings.",
+        "sql": "WITH Opening AS (SELECT AC_CODE_DTL, SUM(DR_AMT_L - CR_AMT_L) AS OPENING_BALANCE FROM GLS_PST_AI_VW WHERE DOC_DATE < TO_DATE('2024-01-01', 'YYYY-MM-DD') AND AC_DTL_TYP = 1 GROUP BY AC_CODE_DTL), Transactions AS (SELECT AC_CODE_DTL, SUM(DR_AMT_L) AS TOTAL_DEBITS, SUM(CR_AMT_L) AS TOTAL_CREDITS FROM GLS_PST_AI_VW WHERE DOC_DATE BETWEEN TO_DATE('2024-01-01', 'YYYY-MM-DD') AND TO_DATE('2024-12-31', 'YYYY-MM-DD') AND AC_DTL_TYP = 1 GROUP BY AC_CODE_DTL) SELECT O.AC_CODE_DTL, O.OPENING_BALANCE, T.TOTAL_DEBITS, T.TOTAL_CREDITS, O.OPENING_BALANCE + T.TOTAL_DEBITS - T.TOTAL_CREDITS AS CLOSING_BALANCE FROM Opening O INNER JOIN Transactions T ON O.AC_CODE_DTL = T.AC_CODE_DTL ORDER BY O.AC_CODE_DTL;"
+    },
+    {
+        "text": "Find vendors with total purchase amounts over 50000 in 2024 who have also supplied items with expiration dates, including the count of such items and total tax paid.",
+        "sql": "SELECT PBM.VNDR_CODE, PBM.VNDR_NM, SUM(PBM.TOTL_BILL_AMT_LOCAL) AS TOTAL_PURCHASE, COUNT(DISTINCT PBD.ITM_CODE) AS ITEM_COUNT_WITH_EXP, SUM(PBD.ITM_TOTL_TAX_AMT_LOCAL) AS TOTAL_TAX FROM PURCHS_BILL_MST_AI_VW PBM INNER JOIN PURCHS_BILL_DTL_AI_VW PBD ON PBM.DOC_NO = PBD.DOC_NO AND PBM.DOC_SRL = PBD.DOC_SRL AND PBM.YR_NO = PBD.YR_NO AND PBM.UNT_NO = PBD.UNT_NO WHERE PBM.DOC_DATE BETWEEN TO_DATE('2024-01-01', 'YYYY-MM-DD') AND TO_DATE('2024-12-31', 'YYYY-MM-DD') AND PBD.EXP_DATE IS NOT NULL GROUP BY PBM.VNDR_CODE, PBM.VNDR_NM HAVING SUM(PBM.TOTL_BILL_AMT_LOCAL) > 50000 ORDER BY TOTAL_PURCHASE DESC;"
+    },
+    {
+        "text": "What is the total net sales amount for each customer in the year 2024, excluding returns, and including only sales where the payment method is cash or bank?",
+        "sql": "SELECT SBM.CSTMR_CODE, SBM.CSTMR_NM, SUM(SBM.TOTL_BILL_AMT_LOCAL - COALESCE(SRBM.TOTL_BILL_AMT_LOCAL, 0)) AS total_net_sales\nFROM SALES_BILL_MST_AI_VW SBM\nLEFT JOIN SALES_RT_BILL_MST_AI_VW SRBM ON SBM.DOC_NO = SRBM.DOC_NO_REF_BILL AND SBM.DOC_SRL = SRBM.DOC_SRL_REF_BILL\nWHERE EXTRACT(YEAR FROM SBM.DOC_DATE) = 2024\nAND (SBM.PYMNT_CSH > 0 OR SBM.PYMNT_BNK > 0)\nGROUP BY SBM.CSTMR_CODE, SBM.CSTMR_NM\nORDER BY total_net_sales DESC;"
+    },
+    {
+        "text": "List the top 5 items by total incoming quantity in inventory movements for warehouse code 'WH01' during the last quarter, along with their average stock cost.",
+        "sql": "SELECT ITEM_CODE, ITEM_NAME, SUM(NET_INCOMING_QUANTITY) AS total_incoming_qty, AVG(STOCK_COST) AS avg_stock_cost\nFROM INV_V_ITM_MOVMNT_AI\nWHERE WAREHOUSE_CODE = 'WH01'\nAND DOCUMENT_DATE >= DATEADD(QUARTER, -1, CURRENT_DATE)\nGROUP BY ITEM_CODE, ITEM_NAME\nORDER BY total_incoming_qty DESC\nLIMIT 5;"
+    },
+    {
+        "text": "Calculate the total debit and credit amounts for each account type in the general ledger for the financial period number 202401, excluding opening balances.",
+        "sql": "SELECT AC_TYP, SUM(DR_AMT_L) AS total_debit_local, SUM(CR_AMT_L) AS total_credit_local\nFROM GLS_PST_AI_VW\nWHERE FINANCE_PERIOD_NUMBER = 202401\nAND IS_OPN_BLNC = 0\nGROUP BY AC_TYP\nHAVING SUM(DR_AMT_L) > 0 OR SUM(CR_AMT_L) > 0\nORDER BY AC_TYP;"
+    },
+    {
+        "text": "Find the employees who have been working for more than 5 years, grouped by their job title, and show the average salary if available, but since salary isn't direct, use CUR_CODE for currency assumption.",
+        "sql": "SELECT JOB_NM_NO_NM, COUNT(EMP_NO) AS employee_count, AVG(DATEDIFF(YEAR, STRT_WRK_DATE, CURRENT_DATE)) AS avg_years_service\nFROM GNR_EMP_AI_VW\nWHERE DATEDIFF(YEAR, STRT_WRK_DATE, CURRENT_DATE) > 5\nAND CRNT_STS_NM = 'Active'\nGROUP BY JOB_NM_NO_NM\nORDER BY employee_count DESC;"
+    },
+    {
+        "text": "What is the total purchase amount by vendor for purchases made on credit in the current year, including tax and discounts, joined with detail to filter items with quantity over 100?",
+        "sql": "SELECT PBM.VNDR_CODE, PBM.VNDR_NM, SUM(PBM.TOTL_BILL_AMT_LOCAL) AS total_purchase_local\nFROM PURCHS_BILL_MST_AI_VW PBM\nINNER JOIN PURCHS_BILL_DTL_AI_VW PBD ON PBM.DOC_NO = PBD.DOC_NO AND PBM.DOC_SRL = PBD.DOC_SRL\nWHERE PBM.PYMNT_CRDT > 0\nAND EXTRACT(YEAR FROM PBM.DOC_DATE) = EXTRACT(YEAR FROM CURRENT_DATE)\nAND PBD.ITM_QTY > 100\nGROUP BY PBM.VNDR_CODE, PBM.VNDR_NM\nORDER BY total_purchase_local DESC;"
+    },
+    {
+        "text": "Compute the profit margin for each finished product in work orders completed in the last month, where profit margin is (total_actual_cost / total_standard_cost) * 100.",
+        "sql": "SELECT ITEM_CODE, WORK_ORDER_NO, (TOTAL_ACTUAL_COST / NULLIF(TOTAL_STANDARD_COST, 0)) * 100 AS profit_margin_pct\nFROM MRP_WORK_ORDER_AI_VW\nWHERE ITEM_CLASS = 1\nAND WORK_ORDER_STATUS = 3\nAND WORK_ORDER_DATE >= DATEADD(MONTH, -1, CURRENT_DATE)\nORDER BY profit_margin_pct DESC;"
+    },
+    {
+        "text": "Retrieve the cash movement statement for cash accounts in the last 6 months, showing document date, debit, credit, and running balance.",
+        "sql": "SELECT DOC_DATE, DOC_NO, DR_AMT_L, CR_AMT_L,\nSUM(DR_AMT_L - CR_AMT_L) OVER (ORDER BY DOC_DATE, DOC_NO) AS running_balance\nFROM GLS_PST_AI_VW\nWHERE AC_DTL_TYP = 1\nAND DOC_DATE >= DATEADD(MONTH, -6, CURRENT_DATE)\nORDER BY DOC_DATE, DOC_NO;"
+    },
+    {
+        "text": "Identify the items with the highest outgoing quantity in sales details, joined with inventory movements, for items using batch numbers, in the current fiscal year.",
+        "sql": "SELECT SBD.ITM_CODE, SUM(SBD.ITM_QTY) AS total_outgoing_qty\nFROM SALES_BILL_DTL_AI_VW SBD\nINNER JOIN INV_V_ITM_MOVMNT_AI IVM ON SBD.ITM_CODE = IVM.ITEM_CODE\nWHERE IVM.USING_BATCH_NUMBER = 1\nAND IVM.FINANCE_PERIOD_NUMBER = (SELECT MAX(FINANCE_PERIOD_NUMBER) FROM GLS_PST_AI_VW)\nGROUP BY SBD.ITM_CODE\nORDER BY total_outgoing_qty DESC\nLIMIT 10;"
+    },
+    {
+        "text": "Calculate the total tax amount collected from sales and subtracted from sales returns for each tax category in the year 2023.",
+        "sql": "SELECT SBM.TAX_CTGRY_NO, SUM(SBM.TAX_AMT_LOCAL - COALESCE(SRBM.TAX_AMT_LOCAL, 0)) AS net_tax_amount\nFROM SALES_BILL_MST_AI_VW SBM\nLEFT JOIN SALES_RT_BILL_MST_AI_VW SRBM ON SBM.DOC_NO = SRBM.DOC_NO_REF_BILL AND SBM.DOC_SRL = SRBM.DOC_SRL_REF_BILL\nWHERE EXTRACT(YEAR FROM SBM.DOC_DATE) = 2023\nGROUP BY SBM.TAX_CTGRY_NO\nORDER BY net_tax_amount DESC;"
+    },
+    {
+        "text": "List vendors with outstanding credit amounts over 10000, based on purchase bills not yet posted, joined with GL to confirm balances.",
+        "sql": "SELECT PBM.VNDR_CODE, PBM.VNDR_NM, SUM(PBM.CRDT_AMT_LOCAL) AS outstanding_credit\nFROM PURCHS_BILL_MST_AI_VW PBM\nINNER JOIN GLS_PST_AI_VW GLS ON PBM.DOC_NO = GLS.DOC_NO AND PBM.DOC_DATE = GLS.DOC_DATE\nWHERE PBM.PST_FLG = 0\nAND GLS.AC_DTL_TYP = 4\nGROUP BY PBM.VNDR_CODE, PBM.VNDR_NM\nHAVING SUM(PBM.CRDT_AMT_LOCAL) > 10000\nORDER BY outstanding_credit DESC;"
+    },
+    {
+        "text": "What is the total net sales amount for each customer in the year 2024, including discounts and taxes, grouped by customer name and sorted by total amount descending?",
+        "sql": "SELECT SBM.CSTMR_NM AS \"Customer Name\", SUM(SBD.ITM_TOTL_AMT - SBD.ITM_TOTL_DSCNT_AMT + SBD.ITM_TOTL_TAX_AMT) AS \"Net Sales Amount\" FROM SALES_BILL_MST_AI_VW SBM JOIN SALES_BILL_DTL_AI_VW SBD ON SBM.DOC_NO = SBD.DOC_NO AND SBM.DOC_SRL = SBD.DOC_SRL AND SBM.YR_NO = SBD.YR_NO WHERE EXTRACT(YEAR FROM SBM.DOC_DATE) = 2024 GROUP BY SBM.CSTMR_NM ORDER BY \"Net Sales Amount\" DESC;"
+    },
+    {
+        "text": "List the top 5 items by total incoming quantity in inventory movements for the last quarter, including item name and warehouse name, where the item uses batch numbers.",
+        "sql": "SELECT IVM.ITEM_NAME AS \"Item Name\", IVM.WAREHOUSE_NAME AS \"Warehouse Name\", SUM(IVM.INCOMING_QUANTITY) AS \"Total Incoming Quantity\" FROM INV_V_ITM_MOVMNT_AI IVM WHERE IVM.USING_BATCH_NUMBER = 'Y' AND IVM.DOCUMENT_DATE >= ADD_MONTHS(TRUNC(SYSDATE, 'Q'), -3) GROUP BY IVM.ITEM_NAME, IVM.WAREHOUSE_NAME ORDER BY \"Total Incoming Quantity\" DESC FETCH FIRST 5 ROWS ONLY;"
+    },
+    {
+        "text": "Calculate the outstanding balance for each vendor as of today, using debit and credit amounts from financial postings, considering only vendor accounts.",
+        "sql": "SELECT GP.AC_DTL_NM AS \"Vendor Name\", SUM(GP.DR_AMT_L - GP.CR_AMT_L) AS \"Outstanding Balance\" FROM GLS_PST_AI_VW GP WHERE GP.AC_DTL_TYP = 4 GROUP BY GP.AC_DTL_NM HAVING SUM(GP.DR_AMT_L - GP.CR_AMT_L) > 0 ORDER BY \"Outstanding Balance\" DESC;"
+    },
+    {
+        "text": "What is the average unit actual cost for completed work orders of finished products in the current year, grouped by item code?",
+        "sql": "SELECT MWO.ITEM_CODE AS \"Item Code\", AVG(MWO.UNIT_ACTUAL_COST) AS \"Average Unit Actual Cost\" FROM MRP_WORK_ORDER_AI_VW MWO WHERE MWO.WORK_ORDER_STATUS = 3 AND MWO.ITEM_CLASS = 1 AND EXTRACT(YEAR FROM MWO.WORK_ORDER_DATE) = EXTRACT(YEAR FROM SYSDATE) GROUP BY MWO.ITEM_CODE ORDER BY \"Average Unit Actual Cost\" DESC;"
+    },
+    {
+        "text": "Find the total purchase amount by item, including taxes and discounts, for purchases made on credit, joined with inventory movements to show net incoming quantity.",
+        "sql": "SELECT PBD.ITM_CODE AS \"Item Code\", SUM(PBD.ITM_TOTL_AMT + PBD.ITM_TOTL_TAX_AMT - PBD.ITM_TOTL_DSCNT_AMT) AS \"Total Purchase Amount\", SUM(IVM.NET_INCOMING_QUANTITY) AS \"Net Incoming Quantity\" FROM PURCHS_BILL_DTL_AI_VW PBD JOIN PURCHS_BILL_MST_AI_VW PBM ON PBD.DOC_NO = PBM.DOC_NO AND PBD.DOC_SRL = PBM.DOC_SRL AND PBD.YR_NO = PBM.YR_NO JOIN INV_V_ITM_MOVMNT_AI IVM ON PBD.ITM_CODE = IVM.ITEM_CODE WHERE PBM.PYMNT_CRDT > 0 GROUP BY PBD.ITM_CODE ORDER BY \"Total Purchase Amount\" DESC;"
+    },
+    {
+        "text": "List employees who are salesmen and their total collected cash sales amount from sales bills in the last month, sorted by amount descending.",
+        "sql": "SELECT GE.EMP_L_NM AS \"Employee Name\", SUM(SBM.CSH_AMT) AS \"Total Cash Sales\" FROM GNR_EMP_AI_VW GE JOIN SALES_BILL_MST_AI_VW SBM ON GE.EMP_NO = SBM.SMAN_CODE WHERE UPPER(GE.JOB_NM_NO_NM) LIKE '%SALESMAN%' AND SBM.DOC_DATE >= ADD_MONTHS(SYSDATE, -1) GROUP BY GE.EMP_L_NM ORDER BY \"Total Cash Sales\" DESC;"
+    },
+    {
+        "text": "What is the total sales return amount by reason type for returns in the current quarter, including the item quantities returned, grouped by reason description?",
+        "sql": "SELECT SRBM.RESON_DESC AS \"Reason Description\", SUM(SRBD.ITM_TOTL_AMT) AS \"Total Return Amount\", SUM(SRBD.ITM_QTY) AS \"Total Returned Quantity\" FROM SALES_RT_BILL_MST_AI_VW SRBM JOIN SALES_RT_BILL_DTL_AI_VW SRBD ON SRBM.DOC_NO = SRBD.DOC_NO AND SRBM.DOC_SRL = SRBD.DOC_SRL AND SRBM.YR_NO = SRBD.YR_NO WHERE SRBM.DOC_DATE >= TRUNC(SYSDATE, 'Q') GROUP BY SRBM.RESON_DESC ORDER BY \"Total Return Amount\" DESC;"
+    },
+    {
+        "text": "Calculate the profit margin for each item sold in the last year by subtracting total purchase cost from sales amount, using sales and purchase details.",
+        "sql": "SELECT SBD.ITM_CODE AS \"Item Code\", SUM(SBD.ITM_TOTL_AMT - SBD.ITM_TOTL_STK_CST) AS \"Total Profit\", (SUM(SBD.ITM_TOTL_AMT - SBD.ITM_TOTL_STK_CST) / SUM(SBD.ITM_TOTL_AMT)) * 100 AS \"Profit Margin %\" FROM SALES_BILL_DTL_AI_VW SBD WHERE EXISTS (SELECT 1 FROM PURCHS_BILL_DTL_AI_VW PBD WHERE PBD.ITM_CODE = SBD.ITM_CODE) AND SBD.YR_NO = EXTRACT(YEAR FROM SYSDATE) - 1 GROUP BY SBD.ITM_CODE HAVING SUM(SBD.ITM_TOTL_AMT) > 0 ORDER BY \"Profit Margin %\" DESC;"
+    },
+    {
+        "text": "Show the cash movement statement for a specific cash code in the last 6 months, including debit and credit amounts, document dates, and descriptions.",
+        "sql": "SELECT GP.DOC_DATE AS \"Document Date\", GP.DOC_DESC AS \"Description\", GP.DR_AMT_L AS \"Debit Amount\", GP.CR_AMT_L AS \"Credit Amount\", (GP.DR_AMT_L - GP.CR_AMT_L) AS \"Net Movement\" FROM GLS_PST_AI_VW GP WHERE GP.AC_DTL_TYP = 1 AND GP.AC_CODE_DTL = 'CASH001' AND GP.DOC_DATE >= ADD_MONTHS(SYSDATE, -6) ORDER BY GP.DOC_DATE;"
+    },
+    {
+        "text": "Find the items with expiring dates within the next 30 days from inventory movements, including quantity available, warehouse, and item description, sorted by expire date.",
+        "sql": "SELECT IVM.ITEM_CODE AS \"Item Code\", IVM.ITEM_DESCRIPTION AS \"Item Description\", IVM.WAREHOUSE_NAME AS \"Warehouse Name\", IVM.AVAILABLE_QUANTITY AS \"Available Quantity\", IVM.EXPIRE_DATE AS \"Expire Date\" FROM INV_V_ITM_MOVMNT_AI IVM WHERE IVM.USE_EXPIRE_DATE = 'Y' AND IVM.EXPIRE_DATE BETWEEN SYSDATE AND SYSDATE + 30 AND IVM.AVAILABLE_QUANTITY > 0 ORDER BY IVM.EXPIRE_DATE;"
+    },
+    {
+        "text": "What is the total incoming quantity for items in the main group code 100 across all warehouses?",
+        "sql": "SELECT SUM(INCOMING_QUANTITY) AS total_incoming_quantity FROM INV_V_ITM_MOVMNT_AI WHERE MAIN_GROUP_CODE = 100;"
+    },
+    {
+        "text": "List the names and nationalities of all employees who started work after January 1, 2020.",
+        "sql": "SELECT EMP_L_NM AS employee_name, NTNLTY_NM AS nationality FROM GNR_EMP_AI_VW WHERE STRT_WRK_DATE > '2020-01-01';"
+    },
+    {
+        "text": "What is the total debit amount in local currency for cash accounts in the general ledger postings?",
+        "sql": "SELECT SUM(DR_AMT_L) AS total_debit_local FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 1;"
+    },
+    {
+        "text": "Calculate the total bill amount for purchases from vendor code 'VND001' in 2025.",
+        "sql": "SELECT SUM(TOTL_BILL_AMT) AS total_purchase_amount FROM PURCHS_BILL_MST_AI_VW WHERE VNDR_CODE = 'VND001' AND YR_NO = 2025;"
+    },
+    {
+        "text": "What is the net sales quantity for item code 'ITM123' from the inventory movements?",
+        "sql": "SELECT SUM(NET_SALES_QUANTITY) AS net_sales_quantity FROM INV_V_ITM_MOVMNT_AI WHERE ITEM_CODE = 'ITM123';"
+    },
+    {
+        "text": "List all completed work orders for finished products along with their actual cost.",
+        "sql": "SELECT WORK_ORDER_NO, TOTAL_ACTUAL_COST FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 3 AND ITEM_CLASS = 1;"
+    },
+    {
+        "text": "What is the total cash amount from sales bills in the sales master table for customer 'CST001'?",
+        "sql": "SELECT SUM(CSH_AMT) AS total_cash_sales FROM SALES_BILL_MST_AI_VW WHERE CSTMR_CODE = 'CST001';"
+    },
+    {
+        "text": "Find the total return amount for sales returns in 2024.",
+        "sql": "SELECT SUM(TOTL_BILL_AMT) AS total_return_amount FROM SALES_RT_BILL_MST_AI_VW WHERE YR_NO = 2024;"
+    },
+    {
+        "text": "What is the average item price in purchase bill details for warehouse 'WRH01'?",
+        "sql": "SELECT AVG(ITM_PRICE) AS average_item_price FROM PURCHS_BILL_DTL_AI_VW WHERE WRHS_CODE = 'WRH01';"
+    },
+    {
+        "text": "List the item codes and total quantities sold in sales bill details for items with tax percentage greater than 10%.",
+        "sql": "SELECT ITM_CODE, SUM(ITM_QTY) AS total_quantity_sold FROM SALES_BILL_DTL_AI_VW WHERE ITM_TAX_PRCNT > 10 GROUP BY ITM_CODE;"
+    },
+    {
+        "text": "What is the total incoming quantity and outgoing quantity for each item in the inventory movements, grouped by item code and warehouse, only for items using batch numbers?",
+        "sql": "SELECT ITEM_CODE, WAREHOUSE_CODE, SUM(INCOMING_QUANTITY) AS total_incoming_quantity, SUM(OUTGOING_QUANTITY) AS total_outgoing_quantity FROM INV_V_ITM_MOVMNT_AI WHERE USING_BATCH_NUMBER = 1 GROUP BY ITEM_CODE, WAREHOUSE_CODE;"
+    },
+    {
+        "text": "List the top 5 vendors by total purchase amount in local currency from purchase bills, including vendor name and total bill amount, for the year 2024.",
+        "sql": "SELECT VNDR_CODE, VNDR_NM, SUM(TOTL_BILL_AMT_LOCAL) AS total_purchase_amount_local FROM PURCHS_BILL_MST_AI_VW WHERE YR_NO = 2024 GROUP BY VNDR_CODE, VNDR_NM ORDER BY total_purchase_amount_local DESC LIMIT 5;"
+    },
+    {
+        "text": "Calculate the net sales amount after discounts and taxes for each customer in the sales bills, grouped by customer code, only for cash payments greater than zero.",
+        "sql": "SELECT CSTMR_CODE, CSTMR_NM, SUM(TOTL_BILL_AMT - DSCNT_AMT - TAX_AMT) AS net_sales_amount FROM SALES_BILL_MST_AI_VW WHERE CSH_AMT > 0 GROUP BY CSTMR_CODE, CSTMR_NM;"
+    },
+    {
+        "text": "Find the average item cost in warehouse average for items in inventory movements that have an expire date, grouped by item category.",
+        "sql": "SELECT ITEM_CATEGORY_NUMBER, ITEM_CATEGORY_NAME, AVG(ITEM_COST_WAREHOUSE_AVERAGE) AS average_item_cost FROM INV_V_ITM_MOVMNT_AI WHERE USE_EXPIRE_DATE = 1 GROUP BY ITEM_CATEGORY_NUMBER, ITEM_CATEGORY_NAME;"
+    },
+    {
+        "text": "What are the debit and credit amounts in local currency for each account type in the general ledger postings, for documents dated in the last quarter?",
+        "sql": "SELECT AC_TYP, SUM(DR_AMT_L) AS total_debit_local, SUM(CR_AMT_L) AS total_credit_local FROM GLS_PST_AI_VW WHERE DOC_DATE >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) GROUP BY AC_TYP;"
+    },
+    {
+        "text": "List employees who started work after January 1, 2023, including their job title, nationality, and current status, ordered by start work date descending.",
+        "sql": "SELECT EMP_NO, EMP_L_NM, JOB_NM_NO_NM, NTNLTY_NM, CRNT_STS_NM FROM GNR_EMP_AI_VW WHERE STRT_WRK_DATE > '2023-01-01' ORDER BY STRT_WRK_DATE DESC;"
+    },
+    {
+        "text": "Compute the total tax amount and discount amount for each item in purchase bill details, joined with master for vendor info, grouped by item code and vendor.",
+        "sql": "SELECT pbd.ITM_CODE, pbm.VNDR_CODE, pbm.VNDR_NM, SUM(pbd.ITM_TOTL_TAX_AMT) AS total_tax_amount, SUM(pbd.ITM_TOTL_DSCNT_AMT) AS total_discount_amount FROM PURCHS_BILL_DTL_AI_VW pbd INNER JOIN PURCHS_BILL_MST_AI_VW pbm ON pbd.DOC_NO = pbm.DOC_NO AND pbd.DOC_SRL = pbm.DOC_SRL AND pbd.YR_NO = pbm.YR_NO AND pbd.UNT_NO = pbm.UNT_NO GROUP BY pbd.ITM_CODE, pbm.VNDR_CODE, pbm.VNDR_NM;"
+    },
+    {
+        "text": "What is the total returned quantity and total return amount for each item in sales return bills, grouped by item code, only for verified returns.",
+        "sql": "SELECT srd.ITM_CODE, SUM(srd.ITM_TOTL_QTY) AS total_returned_quantity, SUM(srd.ITM_TOTL_AMT) AS total_return_amount FROM SALES_RT_BILL_DTL_AI_VW srd INNER JOIN SALES_RT_BILL_MST_AI_VW srm ON srd.DOC_NO = srm.DOC_NO AND srd.DOC_SRL = srm.DOC_SRL AND srd.YR_NO = srm.YR_NO AND srd.UNT_NO = srm.UNT_NO WHERE srm.VRFY_FLG = 1 GROUP BY srd.ITM_CODE;"
+    },
+    {
+        "text": "Find the variance between standard and actual total cost for completed work orders, including item code and work order date, for finished products.",
+        "sql": "SELECT WORK_ORDER_NO, WORK_ORDER_DATE, ITEM_CODE, (TOTAL_STANDARD_COST - TOTAL_ACTUAL_COST) AS cost_variance FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 3 AND ITEM_CLASS = 1;"
+    },
+    {
+        "text": "Calculate the total cash sales and credit sales separately for each salesman in sales bills, grouped by salesman code.",
+        "sql": "SELECT SMAN_CODE, SUM(CSH_AMT) AS total_cash_sales, SUM(CRDT_AMT) AS total_credit_sales FROM SALES_BILL_MST_AI_VW GROUP BY SMAN_CODE;"
+    },
+    {
+        "text": "List all items with their available quantity and stock cost from inventory movements, where the net incoming quantity exceeds net outgoing, ordered by available quantity descending.",
+        "sql": "SELECT ITEM_CODE, ITEM_NAME, AVAILABLE_QUANTITY, STOCK_COST FROM INV_V_ITM_MOVMNT_AI WHERE NET_INCOMING_QUANTITY > NET_OUTGOING_QUANTITY ORDER BY AVAILABLE_QUANTITY DESC;"
+    },
+    {
+        "text": "What is the total other amount and tax amount in purchases for each currency code, from purchase bills master, for posted bills only.",
+        "sql": "SELECT CUR_CODE, SUM(OTHR_AMT) AS total_other_amount, SUM(TAX_AMT) AS total_tax_amount FROM PURCHS_BILL_MST_AI_VW WHERE PST_FLG = 1 GROUP BY CUR_CODE;"
+    },
+    {
+        "text": "Find employees by nationality name containing 'American', including their birth date and payment method, using appropriate matching.",
+        "sql": "SELECT EMP_NO, EMP_L_NM, BRTH_AD_DATE, PAY_MTHD FROM GNR_EMP_AI_VW WHERE UPPER(NTNLTY_NM) LIKE UPPER('%American%');"
+    },
+    {
+        "text": "Compute the average unit actual cost and total scrap quantity for work orders from production plan source, grouped by item class.",
+        "sql": "SELECT ITEM_CLASS, AVG(UNIT_ACTUAL_COST) AS average_unit_actual_cost, SUM(SCRAP_QTY) AS total_scrap_quantity FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_SOURCE = 1 GROUP BY ITEM_CLASS;"
+    },
+    {
+        "text": "What are the total debit amounts for cash accounts in general ledger, joined with document type name, for a specific document type number 10.",
+        "sql": "SELECT DOC_TYP_NM, SUM(DR_AMT_L) AS total_debit_cash FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 1 AND DOC_TYP = 10 GROUP BY DOC_TYP_NM;"
+    },
+    {
+        "text": "List sales return reasons and total return amounts for each, from sales return master and details, grouped by reason type.",
+        "sql": "SELECT srm.RESON_TYP, SUM(srd.ITM_TOTL_AMT) AS total_return_amount FROM SALES_RT_BILL_MST_AI_VW srm INNER JOIN SALES_RT_BILL_DTL_AI_VW srd ON srm.DOC_NO = srd.DOC_NO AND srm.DOC_SRL = srd.DOC_SRL AND srm.YR_NO = srd.YR_NO AND srm.UNT_NO = srd.UNT_NO GROUP BY srm.RESON_TYP;"
+    },
+    {
+        "text": "Calculate the total free quantity and total discount amount for each item in sales details, joined with master for customer, only for tax-free quantity flag set.",
+        "sql": "SELECT sd.ITM_CODE, sm.CSTMR_CODE, sm.CSTMR_NM, SUM(sd.ITM_TOTL_FREE_QTY) AS total_free_quantity, SUM(sd.ITM_TOTL_DSCNT_AMT) AS total_discount_amount FROM SALES_BILL_DTL_AI_VW sd INNER JOIN SALES_BILL_MST_AI_VW sm ON sd.DOC_NO = sm.DOC_NO AND sd.DOC_SRL = sm.DOC_SRL AND sd.YR_NO = sm.YR_NO AND sd.UNT_NO = sm.UNT_NO WHERE sm.CLC_TAX_FREE_QTY_FLG = 1 GROUP BY sd.ITM_CODE, sm.CSTMR_CODE, sm.CSTMR_NM;"
+    },
+    {
+        "text": "Find the maximum and minimum stock cost for items in inventory movements by main group code, including group name.",
+        "sql": "SELECT MAIN_GROUP_CODE, MAIN_GROUP_CODE_NAME, MAX(STOCK_COST) AS max_stock_cost, MIN(STOCK_COST) AS min_stock_cost FROM INV_V_ITM_MOVMNT_AI GROUP BY MAIN_GROUP_CODE, MAIN_GROUP_CODE_NAME;"
+    },
+    {
+        "text": "What is the balance (debit minus credit) for each vendor in general ledger postings, using detailed account where applicable, for balance sheet accounts.",
+        "sql": "SELECT CASE WHEN AC_DTL_TYP = 0 THEN AC_CODE ELSE AC_CODE_DTL END AS account_number, CASE WHEN AC_DTL_TYP = 0 THEN AC_L_NM ELSE AC_DTL_NM END AS account_name, SUM(DR_AMT_L - CR_AMT_L) AS balance FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 4 AND AC_TYP = 1 GROUP BY account_number, account_name;"
+    },
+    {
+        "text": "List work orders with breakdown time greater than standard time, including actual cost and status name, for semi-products.",
+        "sql": "SELECT WORK_ORDER_NO, WORK_ORDER_DATE, BREAKDOWN_TIME, ACTUAL_TIME, TOTAL_ACTUAL_COST, CASE WORK_ORDER_STATUS WHEN 0 THEN 'UN_APPROVED' WHEN 1 THEN 'APPROVED' WHEN 2 THEN 'HOLDING' WHEN 3 THEN 'COMPLETED' WHEN 4 THEN 'CLOSED' END AS status_name FROM MRP_WORK_ORDER_AI_VW WHERE BREAKDOWN_TIME > STANDARD_TIME AND ITEM_CLASS = 2;"
+    },
+    {
+        "text": "What is the total incoming quantity and net sales quantity for each item in the inventory movements where the document date is between January 1, 2023, and December 31, 2023, grouped by item code and warehouse name, only for items using batch numbers?",
+        "sql": "SELECT ITEM_CODE, WAREHOUSE_NAME, SUM(INCOMING_QUANTITY) AS total_incoming_quantity, SUM(NET_SALES_QUANTITY) AS total_net_sales_quantity FROM INV_V_ITM_MOVMNT_AI WHERE DOCUMENT_DATE BETWEEN '2023-01-01' AND '2023-12-31' AND USING_BATCH_NUMBER = 1 GROUP BY ITEM_CODE, WAREHOUSE_NAME;"
+    },
+    {
+        "text": "List the top 5 vendors by total purchase amount in local currency from purchase bills in 2024, including the vendor name and the number of bills, joining with the purchase details to ensure only bills with at least 10 items are considered.",
+        "sql": "SELECT pbm.VNDR_NM, COUNT(DISTINCT pbm.DOC_NO) AS number_of_bills, SUM(pbm.TOTL_BILL_AMT_LOCAL) AS total_purchase_amount_local FROM PURCHS_BILL_MST_AI_VW pbm JOIN (SELECT DOC_NO, COUNT(DOC_D_SQ) AS item_count FROM PURCHS_BILL_DTL_AI_VW GROUP BY DOC_NO HAVING item_count >= 10) pbd ON pbm.DOC_NO = pbd.DOC_NO WHERE YEAR(pbm.DOC_DATE) = 2024 GROUP BY pbm.VNDR_NM ORDER BY total_purchase_amount_local DESC LIMIT 5;"
+    },
+    {
+        "text": "Calculate the average debit amount in local currency for cash accounts (AC_DTL_TYP = 1) in the general ledger postings where the document type is 1 and the document date is after June 1, 2023, grouped by account detail name.",
+        "sql": "SELECT AC_DTL_NM, AVG(DR_AMT_L) AS average_debit_amount_local FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 1 AND DOC_TYP = 1 AND DOC_DATE > '2023-06-01' GROUP BY AC_DTL_NM;"
+    },
+    {
+        "text": "Find all employees who started work in 2022, are currently active, and have a nationality name containing 'American', showing their employee number, local name, job title, and manager name.",
+        "sql": "SELECT EMP_NO, EMP_L_NM, JOB_NM_NO_NM, MNG_NM_NO_NM FROM GNR_EMP_AI_VW WHERE YEAR(STRT_WRK_DATE) = 2022 AND UPPER(CRNT_STS_NM) LIKE '%ACTIVE%' AND UPPER(NTNLTY_NM) LIKE '%AMERICAN%';"
+    },
+    {
+        "text": "What is the total tax amount and discount amount for sales bills in 2023 where the payment method includes cash (PYMNT_CSH > 0), grouped by customer name and salesman code, only for verified bills.",
+        "sql": "SELECT CSTMR_NM, SMAN_CODE, SUM(TAX_AMT) AS total_tax_amount, SUM(DSCNT_AMT) AS total_discount_amount FROM SALES_BILL_MST_AI_VW WHERE YEAR(DOC_DATE) = 2023 AND PYMNT_CSH > 0 AND VRFY_FLG = 1 GROUP BY CSTMR_NM, SMAN_CODE;"
+    },
+    {
+        "text": "Retrieve the item code, total quantity, and total amount local for sales return bills in the last quarter of 2024, joining master and detail, where the return reason type is 2 and the item quantity is greater than 50.",
+        "sql": "SELECT srd.ITM_CODE, SUM(srd.ITM_QTY) AS total_quantity, SUM(srd.ITM_TOTL_AMT_LOCAL) AS total_amount_local FROM SALES_RT_BILL_MST_AI_VW srm JOIN SALES_RT_BILL_DTL_AI_VW srd ON srm.DOC_NO = srd.DOC_NO WHERE DOC_DATE BETWEEN '2024-10-01' AND '2024-12-31' AND srm.RESON_TYP = 2 AND srd.ITM_QTY > 50 GROUP BY srd.ITM_CODE;"
+    },
+    {
+        "text": "For each work order in 2023 that is completed (status 3) and for finished products (item class 1), calculate the variance between standard and actual total cost, showing work order number, item code, and variance amount.",
+        "sql": "SELECT WORK_ORDER_NO, ITEM_CODE, (TOTAL_STANDARD_COST - TOTAL_ACTUAL_COST) AS cost_variance FROM MRP_WORK_ORDER_AI_VW WHERE YEAR(WORK_ORDER_DATE) = 2023 AND WORK_ORDER_STATUS = 3 AND ITEM_CLASS = 1;"
+    },
+    {
+        "text": "List all inventory movements for items in the 'Electronics' main group where the net outgoing quantity exceeds 100, including item name, document type name, and warehouse name, ordered by document date descending.",
+        "sql": "SELECT ITEM_NAME, DOCUMENT_TYPE_NAME, WAREHOUSE_NAME FROM INV_V_ITM_MOVMNT_AI WHERE UPPER(MAIN_GROUP_CODE_NAME) LIKE '%ELECTRONICS%' AND NET_OUTGOING_QUANTITY > 100 ORDER BY DOCUMENT_DATE DESC;"
+    },
+    {
+        "text": "Compute the balance (debit minus credit) for each customer account (AC_DTL_TYP = 3) in the general ledger for documents posted in 2024, grouped by customer name (using AC_DTL_NM), and filter for balances over 10000.",
+        "sql": "SELECT AC_DTL_NM, SUM(DR_AMT_L - CR_AMT_L) AS balance FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 3 AND YEAR(DOC_DATE) = 2024 GROUP BY AC_DTL_NM HAVING balance > 10000;"
+    },
+    {
+        "text": "Find the total purchase quantity and average item price for each item code from purchase details where the warehouse code is 'WH001' and the document date is in 2023, joining with master to include only posted bills.",
+        "sql": "SELECT pbd.ITM_CODE, SUM(pbd.ITM_QTY) AS total_quantity, AVG(pbd.ITM_PRICE) AS average_price FROM PURCHS_BILL_DTL_AI_VW pbd JOIN PURCHS_BILL_MST_AI_VW pbm ON pbd.DOC_NO = pbm.DOC_NO WHERE pbd.WRHS_CODE = 'WH001' AND YEAR(pbm.DOC_DATE) = 2023 AND pbm.PST_FLG = 1 GROUP BY pbd.ITM_CODE;"
+    },
+    {
+        "text": "What are the top 10 items by total sales amount in local currency from sales details in 2024, including item code, total quantity sold, and joining with inventory movements to get item group name?",
+        "sql": "SELECT sbd.ITM_CODE, im.ITEM_GROUP_CLASS_NAME, SUM(sbd.ITM_TOTL_AMT_LOCAL) AS total_sales_amount_local, SUM(sbd.ITM_QTY) AS total_quantity FROM SALES_BILL_DTL_AI_VW sbd JOIN INV_V_ITM_MOVMNT_AI im ON sbd.ITM_CODE = im.ITEM_CODE JOIN SALES_BILL_MST_AI_VW sbm ON sbd.DOC_NO = sbm.DOC_NO WHERE YEAR(sbm.DOC_DATE) = 2024 GROUP BY sbd.ITM_CODE, im.ITEM_GROUP_CLASS_NAME ORDER BY total_sales_amount_local DESC LIMIT 10;"
+    },
+    {
+        "text": "Retrieve employee details including employee number, local name, birth date, and end work date for employees whose grade name contains 'Senior' and who are male, ordered by start work date.",
+        "sql": "SELECT EMP_NO, EMP_L_NM, BRTH_AD_DATE, END_WRK_DATE FROM GNR_EMP_AI_VW WHERE UPPER(GRD_NO_NM) LIKE '%SENIOR%' AND UPPER(GNDR_TYP_NM) LIKE '%MALE%' ORDER BY STRT_WRK_DATE;"
+    },
+    {
+        "text": "Calculate the total scrap quantity and average unit actual cost for work orders sourced from production plan (source 1) in 2024, grouped by item class, only for approved orders.",
+        "sql": "SELECT ITEM_CLASS, SUM(SCRAP_QTY) AS total_scrap_quantity, AVG(UNIT_ACTUAL_COST) AS average_unit_actual_cost FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_SOURCE = 1 AND YEAR(WORK_ORDER_DATE) = 2024 AND WORK_ORDER_STATUS = 1 GROUP BY ITEM_CLASS;"
+    },
+    {
+        "text": "List all sales returns where the total bill amount local is greater than 5000, including customer name, return date, reason description, and total tax amount, for returns in 2023.",
+        "sql": "SELECT CSTMR_NM, DOC_DATE, RESON_DESC, TAX_AMT FROM SALES_RT_BILL_MST_AI_VW WHERE TOTL_BILL_AMT_LOCAL > 5000 AND YEAR(DOC_DATE) = 2023;"
+    },
+    {
+        "text": "For inventory items using serial numbers, find the average stock cost and total available quantity per item category name, where the incoming date is in 2024, grouped by item category.",
+        "sql": "SELECT ITEM_CATEGORY_NAME, AVG(STOCK_COST) AS average_stock_cost, SUM(AVAILABLE_QUANTITY) AS total_available_quantity FROM INV_V_ITM_MOVMNT_AI WHERE USING_SERIAL_NUMBER = 1 AND YEAR(INCOMING_DATE) = 2024 GROUP BY ITEM_CATEGORY_NAME;"
+    },
+    {
+        "text": "Compute the net balance for bank accounts (AC_DTL_TYP = 2) by summing debit minus credit in local currency, grouped by bank name (AC_DTL_NM), for documents with currency difference.",
+        "sql": "SELECT AC_DTL_NM, SUM(DR_AMT_L - CR_AMT_L) AS net_balance FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 2 AND IS_CRNCY_DFRNC = 1 GROUP BY AC_DTL_NM;"
+    },
+    {
+        "text": "Find the total other amount and tax amount for purchases from vendors in a specific province (using join with inventory if needed), but wait, schema doesn't have province in purchase, perhaps link via vendor code if available, but assuming direct: for purchases in 2024 with tax category 1.",
+        "sql": "SELECT VNDR_NM, SUM(OTHR_AMT) AS total_other_amount, SUM(TAX_AMT) AS total_tax_amount FROM PURCHS_BILL_MST_AI_VW WHERE YEAR(DOC_DATE) = 2024 AND TAX_CTGRY_NO = 1 GROUP BY VNDR_NM;"
+    },
+    {
+        "text": "Retrieve sales bill details for bills with credit payment > 0, showing item code, quantity, total amount, and customer name, where the item tax percent is 15%, in 2023.",
+        "sql": "SELECT sbd.ITM_CODE, sbd.ITM_QTY, sbd.ITM_TOTL_AMT, sbm.CSTMR_NM FROM SALES_BILL_DTL_AI_VW sbd JOIN SALES_BILL_MST_AI_VW sbm ON sbd.DOC_NO = sbm.DOC_NO WHERE sbm.PYMNT_CRDT > 0 AND sbd.ITM_TAX_PRCNT = 15 AND YEAR(sbm.DOC_DATE) = 2023;"
+    },
+    {
+        "text": "For employees with payment method 'bank', list their group name, nationality name, and count per group, where marital status is married.",
+        "sql": "SELECT GRP_NO_NM, NTNLTY_NM, COUNT(EMP_NO) AS employee_count FROM GNR_EMP_AI_VW WHERE UPPER(PAY_MTHD) LIKE '%BANK%' AND UPPER(MRTL_STS_NM) LIKE '%MARRIED%' GROUP BY GRP_NO_NM, NTNLTY_NM;"
+    },
+    {
+        "text": "Calculate the efficiency ratio (actual time / standard time) for completed work orders in 2024, showing work order number, item code, and efficiency, where breakdown time > 0.",
+        "sql": "SELECT WORK_ORDER_NO, ITEM_CODE, (ACTUAL_TIME / STANDARD_TIME) AS efficiency_ratio FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 3 AND YEAR(WORK_ORDER_DATE) = 2024 AND BREAKDOWN_TIME > 0;"
+    },
+    {
+        "text": "Calculate the average cost variance between standard and actual material costs for completed work orders of finished products that originated from customer orders, grouped by item code.",
+        "sql": "SELECT ITEM_CODE, AVG(MATERIAL_ACTUAL_COST - MATERIAL_STANDARD_COST) AS average_cost_variance FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 3 AND ITEM_CLASS = 1 AND WORK_ORDER_SOURCE = 2 GROUP BY ITEM_CODE;"
+    },
+    {
+        "text": "Find the total discount amount given on purchases from vendors located in a specific province, for items belonging to a particular subgroup, during the last financial period.",
+        "sql": "SELECT SUM(DSCNT_AMT) AS total_discount FROM PURCHS_BILL_MST_AI_VW PB JOIN INV_V_ITM_MOVMNT_AI IM ON PB.DOC_NO = IM.DOCUMENT_TYPE WHERE IM.PROVINCE_NAME LIKE UPPER('%specific province%') AND IM.SUBGROUP_CODE_NAME LIKE UPPER('%particular subgroup%') AND IM.FINANCE_PERIOD_NAME = 'Last Period';"
+    },
+    {
+        "text": "Determine the net sales quantity of kit items that use batch numbers and have an expiration date, sold through credit payment method, aggregated by salesman's name.",
+        "sql": "SELECT SMAN_CODE_NM, SUM(NET_SALES_QUANTITY) AS net_sales FROM SALES_BILL_MST_AI_VW SB JOIN INV_V_ITM_MOVMNT_AI IM ON SB.DOC_NO = IM.DOCUMENT_TYPE WHERE IM.KIT_ITEM = 1 AND IM.USING_BATCH_NUMBER = 1 AND IM.USE_EXPIRE_DATE = 1 AND SB.PYMNT_CRDT = 1 GROUP BY SMAN_CODE_NM;"
+    },
+    {
+        "text": "Compute the ratio of scrap quantity to product quantity for work orders that exceeded their standard time by more than 20%, for semi-products in holding status.",
+        "sql": "SELECT WORK_ORDER_NO, (SCRAP_QTY / PRODUCT_QTY) AS scrap_ratio FROM MRP_WORK_ORDER_AI_VW WHERE ITEM_CLASS = 2 AND WORK_ORDER_STATUS = 2 AND ACTUAL_TIME > STANDARD_TIME * 1.2;"
+    },
+    {
+        "text": "List employees who are managers and have supervised sales returns exceeding a certain amount in total replacement value, including their nationality and employment type.",
+        "sql": "SELECT E.EMP_L_NM, E.NTNLTY_NM, E.EMPLYMNT_TYP_NM FROM GNR_EMP_AI_VW E JOIN SALES_RT_BILL_MST_AI_VW SR ON E.EMP_NO = SR.EMP_CODE WHERE E.JOB_NM_NO_NM LIKE UPPER('%manager%') GROUP BY E.EMP_L_NM, E.NTNLTY_NM, E.EMPLYMNT_TYP_NM HAVING SUM(SR.RPLC_AMT) > 10000;"
+    },
+    {
+        "text": "Calculate the total value added tax amount for outgoing inventory movements of items with global trade item numbers, from warehouses in a specific region, during a given date range.",
+        "sql": "SELECT SUM(VALUE_ADDED_TAX_AMOUNT) AS total_vat FROM INV_V_ITM_MOVMNT_AI WHERE INCOMING_OUTGOING = 'Outgoing' AND GLOBAL_TRAD_ITEM_NUMBER_CODE IS NOT NULL AND REGION_CODE_NAME LIKE UPPER('%specific region%') AND DOCUMENT_DATE BETWEEN '2024-01-01' AND '2024-12-31';"
+    },
+    {
+        "text": "Find the average breakdown time for work orders closed in the current year, grouped by work order source, for recycled products with actual costs higher than standard.",
+        "sql": "SELECT WORK_ORDER_SOURCE, AVG(BREAKDOWN_TIME) AS avg_breakdown FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 4 AND ITEM_CLASS = 4 AND TOTAL_ACTUAL_COST > TOTAL_STANDARD_COST AND EXTRACT(YEAR FROM WORK_ORDER_DATE) = EXTRACT(YEAR FROM CURRENT_DATE) GROUP BY WORK_ORDER_SOURCE;"
+    },
+    {
+        "text": "Determine the total other amounts paid in purchases where the tax category is free quantity calculation, involving vendors with alternative codes, aggregated by currency code.",
+        "sql": "SELECT CUR_CODE, SUM(OTHR_AMT) AS total_other FROM PURCHS_BILL_MST_AI_VW PB JOIN INV_V_ITM_MOVMNT_AI IM ON PB.DOC_NO = IM.DOCUMENT_TYPE WHERE PB.CLC_TAX_FREE_QTY_FLG = 1 AND IM.ALTERBATIVE_CODE IS NOT NULL GROUP BY CUR_CODE;"
+    },
+    {
+        "text": "Compute the percentage of credit amounts in local currency for balance sheet accounts that are customer detailed types, compared to total debits, grouped by document type name.",
+        "sql": "SELECT DOC_TYP_NM, (SUM(CR_AMT_L) / SUM(DR_AMT_L + CR_AMT_L)) * 100 AS credit_percentage FROM GLS_PST_AI_VW WHERE AC_TYP = 1 AND AC_DTL_TYP = 3 GROUP BY DOC_TYP_NM;"
+    },
+    {
+        "text": "List the top 10 items by available quantity that are object reuse exchange items, manufactured in a specific country, with their harmonic system nomenclature and brand.",
+        "sql": "SELECT ITEM_CODE, AVAILABLE_QUANTITY, HARMONIZED_SYSTEM_NOMENCLATURE, BRAND FROM INV_V_ITM_MOVMNT_AI WHERE OBJECT_REUSE_EXCHANGE_ITEM = 1 AND MANUFACTURE_COUNTRY LIKE UPPER('%specific country%') ORDER BY AVAILABLE_QUANTITY DESC LIMIT 10;"
+    },
+    {
+        "text": "Calculate the total indirect actual cost for approved work orders from production planning, where labor actual cost exceeds machine actual cost, grouped by item class.",
+        "sql": "SELECT ITEM_CLASS, SUM(INDIRECT_ACTUAL_COST) AS total_indirect FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 1 AND WORK_ORDER_SOURCE = 1 AND LABOR_ACTUAL_COST > MACHINE_ACTUAL_COST GROUP BY ITEM_CLASS;"
+    },
+    {
+        "text": "Find the average discount amount detail for inventory movements involving assistant groups, with using item attachments, for incoming quantities over a threshold, grouped by project name.",
+        "sql": "SELECT PROJECT_NAME, AVG(DISCOUNT_AMOUNT_DETAIL) AS avg_discount_detail FROM INV_V_ITM_MOVMNT_AI WHERE ASISTANT_GROUP_NAME IS NOT NULL AND USING_ITEM_ATTACHMENT = 1 AND INCOMING_QUANTITY > 100 GROUP BY PROJECT_NAME;"
+    },
+    {
+        "text": "Determine the net outgoing quantity of items with maximum parent size, using serial numbers, sold to customers in a specific city, aggregated by season.",
+        "sql": "SELECT SEASONAL_ITEM, SUM(NET_OUTGOING_QUANTITY) AS net_outgoing FROM INV_V_ITM_MOVMNT_AI WHERE MAXIMUM_PARENT_SIZE IS NOT NULL AND USING_SERIAL_NUMBER = 1 AND CITY_NAME LIKE UPPER('%specific city%') GROUP BY SEASONAL_ITEM;"
+    },
+    {
+        "text": "Compute the total tax amount local for sales returns where the reason type is defect, involving items with segment contact, grouped by marketer code.",
+        "sql": "SELECT MRKTR_CODE, SUM(TAX_AMT_LOCAL) AS total_tax_local FROM SALES_RT_BILL_MST_AI_VW SR JOIN SALES_RT_BILL_DTL_AI_VW SD ON SR.DOC_NO = SD.DOC_NO WHERE SR.RESON_TYP = 'defect' AND SD.ITM_SGMNT_CNTCT IS NOT NULL GROUP BY MRKTR_CODE;"
+    },
+    {
+        "text": "List employees born in a certain month who have worked on purchase bills with standby flag, including their grade name and payment method.",
+        "sql": "SELECT E.EMP_L_NM, E.GRD_NO_NM, E.PAY_MTHD FROM GNR_EMP_AI_VW E JOIN PURCHS_BILL_MST_AI_VW PB ON E.EMP_NO = PB.PMAN_CODE WHERE EXTRACT(MONTH FROM E.BRTH_AD_DATE) = 5 AND PB.STNDBY_FLG = 1;"
+    },
+    {
+        "text": "Calculate the variance between unit standard cost and unit actual cost for completed work orders of semi-products, where deliver quantity matches work order quantity.",
+        "sql": "SELECT WORK_ORDER_NO, (UNIT_ACTUAL_COST - UNIT_STANDARD_COST) AS unit_cost_variance FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 3 AND ITEM_CLASS = 2 AND DELIVER_QTY = WORK_ORDER_QTY;"
+    },
+    {
+        "text": "Find the total free incoming quantity for items in detail groups with material requirement planning, from branches in a specific year, grouped by country name.",
+        "sql": "SELECT COUNTRY_NAME, SUM(FREE_INCOMING_QUANTITY) AS total_free_incoming FROM INV_V_ITM_MOVMNT_AI WHERE DETAIL_GROUP_CODE_NAME IS NOT NULL AND MATERIAL_REQUIREMENT_PLANING = 1 AND BRANCH_YEAR = 2024 GROUP BY COUNTRY_NAME;"
+    },
+    {
+        "text": "Determine the average other value added tax amount for outgoing movements of branded items, with package size over a limit, aggregated by vendor name.",
+        "sql": "SELECT VENDOR_NAME, AVG(OTHER_VALUE_ADDED_TAX_AMOUNT) AS avg_other_vat FROM INV_V_ITM_MOVMNT_AI WHERE INCOMING_OUTGOING = 'Outgoing' AND BRAND IS NOT NULL AND ITEM_PACKAGE_SIZE > 10 GROUP BY VENDOR_NAME;"
+    },
+    {
+        "text": "Compute the percentage of bank payments in total bill amount for purchases verified and posted, involving sub-ledger codes, grouped by tax code.",
+        "sql": "SELECT TAX_CODE, (SUM(BNK_AMT) / SUM(TOTL_BILL_AMT)) * 100 AS bank_payment_percentage FROM PURCHS_BILL_MST_AI_VW WHERE VRFY_FLG = 1 AND PST_FLG = 1 AND SUB_LDGR1_CODE IS NOT NULL GROUP BY TAX_CODE;"
+    },
+    {
+        "text": "List the top 5 collectors by total credit amount in foreign currency for documents with currency difference, including their name and reference number count.",
+        "sql": "SELECT CLCTR_CODE_NM, SUM(CR_AMT_F) AS total_credit_foreign, COUNT(DISTINCT REF_NO) AS ref_count FROM GLS_PST_AI_VW WHERE IS_CRNCY_DFRNC = 1 GROUP BY CLCTR_CODE_NM ORDER BY total_credit_foreign DESC LIMIT 5;"
+    },
+    {
+        "text": "Identify all inventory movements for seasonal items that occurred outside their typical season, involving transfers between warehouses with a net outgoing quantity exceeding 100 units, and include the associated customer or vendor details if applicable.",
+        "sql": "SELECT i.ITEM_CODE, i.ITEM_NAME, i.SEASONAL_ITEM, i.WAREHOUSE_CODE, i.WAREHOUSE_NAME, i.INCOMING_OUTGOING_NAME, i.NET_OUTGOING_QUANTITY, i.CUSTOMER_CODE, i.CUSTOMER_NAME, i.VENDOR_CODE, i.VENDOR_NAME, i.DOCUMENT_DATE FROM INV_V_ITM_MOVMNT_AI i WHERE i.SEASONAL_ITEM = 1 AND i.NET_OUTGOING_QUANTITY > 100 AND i.INCOMING_OUTGOING = 'Transfer' AND i.DOCUMENT_DATE NOT BETWEEN '2023-06-01' AND '2023-08-31';"
+    },
+    {
+        "text": "Retrieve financial postings where there is a currency difference in balance sheet accounts for vendors, showing debit and credit amounts in local currency, filtered for documents dated in the last fiscal quarter with manual numbers indicating overrides.",
+        "sql": "SELECT g.DOC_SRL, g.DOC_TYP, g.AC_CODE, g.AC_L_NM, g.AC_TYP, g.IS_CRNCY_DFRNC, g.AC_DTL_TYP, g.DOC_NO, g.DOC_DATE, g.DR_AMT_L, g.CR_AMT_L, g.MNL_NO FROM GLS_PST_AI_VW g WHERE g.IS_CRNCY_DFRNC = 1 AND g.AC_TYP = 1 AND g.AC_DTL_TYP = 4 AND g.DOC_DATE >= DATEADD(QUARTER, -1, GETDATE()) AND g.MNL_NO IS NOT NULL;"
+    },
+    {
+        "text": "List employees who have an end work date but are still marked as active in a rare probation extension scenario, including their nationality, gender, and payment method, sorted by start work date.",
+        "sql": "SELECT e.EMP_NO, e.EMP_L_NM, e.CRNT_STS_NM, e.END_WRK_DATE, e.NTNLTY_NM, e.GNDR_TYP_NM, e.PAY_MTHD, e.END_TST_PRD_DATE FROM GNR_EMP_AI_VW e WHERE e.END_WRK_DATE IS NOT NULL AND UPPER(e.CRNT_STS_NM) LIKE '%ACTIVE%' AND e.END_TST_PRD_DATE > e.STRT_WRK_DATE + INTERVAL '6 MONTH' ORDER BY e.STRT_WRK_DATE;"
+    },
+    {
+        "text": "Find purchase bills where the total bill amount is negative due to excessive discounts and additional discounts, involving tax-free quantities in a specific tax category, and join with details to show items with free quantities.",
+        "sql": "SELECT m.DOC_NO, m.TOTL_BILL_AMT_LOCAL, m.DSCNT_AMT_LOCAL, m.DSCNT_AMT_ADD_LOCAL, m.TAX_CTGRY_NO, m.CLC_TAX_FREE_QTY_FLG, d.ITM_CODE, d.ITM_FREE_QTY FROM PURCHS_BILL_MST_AI_VW m JOIN PURCHS_BILL_DTL_AI_VW d ON m.DOC_NO = d.DOC_NO AND m.DOC_SRL = d.DOC_SRL WHERE m.TOTL_BILL_AMT_LOCAL < 0 AND m.CLC_TAX_FREE_QTY_FLG = 1 AND m.TAX_CTGRY_NO = 5 AND d.ITM_FREE_QTY > 0;"
+    },
+    {
+        "text": "Query sales bills for rare cases where replacement payments exceed the document amount, involving coupons and points replacement, filtered for verified and posted bills in the current year.",
+        "sql": "SELECT s.DOC_NO, s.DOC_AMT_LOCAL, s.RPLC_AMT_LOCAL, s.CPN_AMT_LOCAL, s.POINT_AMT_RPLC_LOCAL, s.VRFY_FLG, s.PST_FLG, s.YR_NO FROM SALES_BILL_MST_AI_VW s WHERE s.RPLC_AMT_LOCAL > s.DOC_AMT_LOCAL AND s.PYMNT_CPN = 1 AND s.PYMNT_POINT_RPLC = 1 AND s.VRFY_FLG = 1 AND s.PST_FLG = 1 AND s.YR_NO = YEAR(GETDATE());"
+    },
+    {
+        "text": "Extract details from sales bill items where the total tax amount is zero but tax percentage is applied, in scenarios with service flags and employee codes indicating internal sales returns.",
+        "sql": "SELECT d.DOC_NO, d.ITM_CODE, d.ITM_TOTL_TAX_AMT_LOCAL, d.ITM_TAX_PRCNT, d.SRVC_FLG, d.EMP_CODE FROM SALES_BILL_DTL_AI_VW d WHERE d.ITM_TOTL_TAX_AMT_LOCAL = 0 AND d.ITM_TAX_PRCNT > 0 AND d.SRVC_FLG = 1 AND d.EMP_CODE IS NOT NULL;"
+    },
+    {
+        "text": "Identify sales return bills for recycled products from work orders, where the return reason is breakdown-related, and the total return amount impacts credit payments negatively.",
+        "sql": "SELECT r.DOC_NO, r.RESON_DESC, r.CRDT_AMT_LOCAL, r.TOTL_BILL_AMT_LOCAL, w.ITEM_CLASS, w.BREAKDOWN_TIME FROM SALES_RT_BILL_MST_AI_VW r JOIN MRP_WORK_ORDER_AI_VW w ON r.REF_NO = w.WORK_ORDER_NO WHERE w.ITEM_CLASS = 4 AND UPPER(r.RESON_DESC) LIKE '%BREAKDOWN%' AND r.CRDT_AMT_LOCAL < 0;"
+    },
+    {
+        "text": "Fetch work orders that are holding status due to actual labor costs exceeding standard by over 50%, sourced from customer orders, including scrap and delivered quantities.",
+        "sql": "SELECT w.WORK_ORDER_NO, w.WORK_ORDER_STATUS, w.WORK_ORDER_SOURCE, w.LABOR_ACTUAL_COST, w.LABOR_STANDARD_COST, w.SCRAP_QTY, w.DELIVER_QTY FROM MRP_WORK_ORDER_AI_VW w WHERE w.WORK_ORDER_STATUS = 2 AND w.WORK_ORDER_SOURCE = 2 AND w.LABOR_ACTUAL_COST > w.LABOR_STANDARD_COST * 1.5;"
+    },
+    {
+        "text": "Report inventory movements for items using serial numbers that have been attached to multiple documents in a single day, focusing on outgoing free quantities in rare exchange scenarios.",
+        "sql": "SELECT i.ITEM_CODE, i.USING_SERIAL_NUMBER, i.DOCUMENT_DATE, i.DOCUMENT_TYPE_NAME, COUNT(DISTINCT i.DOCUMENT_TYPE) AS doc_count, i.FREE_OUTGOING_QUANTITY, i.OBJECT_REUSE_EXCHANGE_ITEM FROM INV_V_ITM_MOVMNT_AI i WHERE i.USING_SERIAL_NUMBER = 1 AND i.OBJECT_REUSE_EXCHANGE_ITEM = 1 GROUP BY i.ITEM_CODE, i.USING_SERIAL_NUMBER, i.DOCUMENT_DATE, i.FREE_OUTGOING_QUANTITY, i.OBJECT_REUSE_EXCHANGE_ITEM HAVING doc_count > 1;"
+    },
+    {
+        "text": "Analyze general ledger postings for other debit accounts with opening balances that show credit amounts exceeding debits in foreign currency, linked to specific collectors.",
+        "sql": "SELECT g.AC_DTL_TYP, g.IS_OPN_BLNC, g.CR_AMT_F, g.DR_AMT_F, g.CLCTR_CODE_NM FROM GLS_PST_AI_VW g WHERE g.AC_DTL_TYP = 5 AND g.IS_OPN_BLNC = 1 AND g.CR_AMT_F > g.DR_AMT_F AND UPPER(g.CLCTR_CODE_NM) LIKE UPPER('%specific_collector%');"
+    },
+    {
+        "text": "List employees in rare religious groups with marital status changes post-employment, including their group names and end of probation dates beyond standard.",
+        "sql": "SELECT e.EMP_NO, e.RLGN_NM, e.MRTL_STS_NM, e.GRP_NO_NM, e.END_TST_PRD_DATE, e.STRT_WRK_DATE FROM GNR_EMP_AI_VW e WHERE UPPER(e.RLGN_NM) LIKE '%RARE_RELIGION%' AND e.END_TST_PRD_DATE > e.STRT_WRK_DATE + INTERVAL '3 MONTH';"
+    },
+    {
+        "text": "Query purchase details for items with expiration dates passed but still purchased with high other charges, joined with master for vendor names in standby flagged bills.",
+        "sql": "SELECT d.ITM_CODE, d.EXP_DATE, d.ITM_OTHR_CHRG_AMT_LOCAL, m.VNDR_NM, m.STNDBY_FLG FROM PURCHS_BILL_DTL_AI_VW d JOIN PURCHS_BILL_MST_AI_VW m ON d.DOC_NO = m.DOC_NO AND d.DOC_SRL = m.DOC_SRL WHERE d.EXP_DATE < m.DOC_DATE AND d.ITM_OTHR_CHRG_AMT_LOCAL > 1000 AND m.STNDBY_FLG = 1;"
+    },
+    {
+        "text": "Find sales masters where commission percentage is applied but total bill amount is zero due to full discounts, involving mobile customers and rare tax bill types.",
+        "sql": "SELECT s.DOC_NO, s.COMM_PRCNT, s.TOTL_BILL_AMT_LOCAL, s.DSCNT_AMT_LOCAL, s.CSTMR_MOBILE, s.TAX_BILL_TYP FROM SALES_BILL_MST_AI_VW s WHERE s.COMM_PRCNT > 0 AND s.TOTL_BILL_AMT_LOCAL = 0 AND s.DSCNT_AMT_LOCAL = s.DOC_AMT_LOCAL AND s.TAX_BILL_TYP = 'RARE_TYPE';"
+    },
+    {
+        "text": "Extract sales return details referencing original bills where returned quantities exceed sold, for items with segment contacts, indicating over-return errors.",
+        "sql": "SELECT r.DOC_NO, r.DOC_NO_REF_BILL, r.ITM_QTY, s.ITM_QTY AS original_qty, r.ITM_SGMNT_CNTCT FROM SALES_RT_BILL_DTL_AI_VW r JOIN SALES_BILL_DTL_AI_VW s ON r.DOC_NO_REF_BILL = s.DOC_NO AND r.DOC_SRL_REF_BILL = s.DOC_SRL WHERE r.ITM_QTY > s.ITM_QTY AND r.ITM_SGMNT_CNTCT IS NOT NULL;"
+    },
+    {
+        "text": "Report work orders closed with zero product quantity but positive scrap, from manual sources, showing variance in machine costs.",
+        "sql": "SELECT w.WORK_ORDER_NO, w.WORK_ORDER_STATUS, w.PRODUCT_QTY, w.SCRAP_QTY, w.WORK_ORDER_SOURCE, w.MACHINE_ACTUAL_COST - w.MACHINE_STANDARD_COST AS cost_variance FROM MRP_WORK_ORDER_AI_VW w WHERE w.WORK_ORDER_STATUS = 4 AND w.PRODUCT_QTY = 0 AND w.SCRAP_QTY > 0 AND w.WORK_ORDER_SOURCE = 0;"
+    },
+    {
+        "text": "Identify inventory for kit items using batch numbers with value added tax amounts negative, linked to alternative groups in rare countries.",
+        "sql": "SELECT i.ITEM_CODE, i.KIT_ITEM, i.USING_BATCH_NUMBER, i.VALUE_ADDED_TAX_AMOUNT, i.ALTRNATIVE_GROUP_NAME, i.COUNTRY_NAME FROM INV_V_ITM_MOVMNT_AI i WHERE i.KIT_ITEM = 1 AND i.USING_BATCH_NUMBER = 1 AND i.VALUE_ADDED_TAX_AMOUNT < 0 AND UPPER(i.COUNTRY_NAME) LIKE '%RARE_COUNTRY%';"
+    },
+    {
+        "text": "Analyze postings for employee accounts with document descriptions indicating discrepancies, showing net amounts where debits equal credits in local but not foreign.",
+        "sql": "SELECT g.AC_DTL_TYP, g.DOC_DESC, g.DR_AMT_L - g.CR_AMT_L AS net_local, g.DR_AMT_F - g.CR_AMT_F AS net_foreign FROM GLS_PST_AI_VW g WHERE g.AC_DTL_TYP = 7 AND UPPER(g.DOC_DESC) LIKE '%DISCREPANCY%' AND (g.DR_AMT_L - g.CR_AMT_L) = 0 AND (g.DR_AMT_F - g.CR_AMT_F) <> 0;"
+    },
+    {
+        "text": "List employees with citizenship in multiple countries (rare dual), grouped by grade, showing average work duration.",
+        "sql": "SELECT e.GRD_NO_NM, e.CTZN_NO_NM, COUNT(DISTINCT e.CTZN_NO_NM) AS citizenship_count, AVG(DATEDIFF(DAY, e.STRT_WRK_DATE, COALESCE(e.END_WRK_DATE, GETDATE()))) AS avg_duration FROM GNR_EMP_AI_VW e GROUP BY e.GRD_NO_NM, e.CTZN_NO_NM HAVING citizenship_count > 1;"
+    },
+    {
+        "text": "Query purchases with cheque notes dated before document date, indicating pre-payments, with total amounts in foreign currency exceeding local by a factor.",
+        "sql": "SELECT m.DOC_NO, m.DOC_DATE, m.CHQ_NOTE_DATE, m.TOTL_BILL_AMT, m.TOTL_BILL_AMT_LOCAL FROM PURCHS_BILL_MST_AI_VW m WHERE m.CHQ_NOTE_DATE < m.DOC_DATE AND m.TOTL_BILL_AMT > m.TOTL_BILL_AMT_LOCAL * 1.2;"
+    },
+    {
+        "text": "Find sales where point replacements are used for full payment but tax is still applied, in standby flagged scenarios with specific sub-ledgers.",
+        "sql": "SELECT s.DOC_NO, s.POINT_AMT_RPLC_LOCAL, s.DOC_AMT_LOCAL, s.TAX_AMT_LOCAL, s.STNDBY_FLG, s.SUB_LDGR1_CODE FROM SALES_BILL_MST_AI_VW s WHERE s.POINT_AMT_RPLC_LOCAL = s.DOC_AMT_LOCAL AND s.TAX_AMT_LOCAL > 0 AND s.STNDBY_FLG = 1 AND s.SUB_LDGR1_CODE = 'SPECIFIC';"
+    },
+    {
+        "text": "What is the total net incoming quantity and stock cost for seasonal items from a specific manufacture country that were involved in incoming movements during a finance period where the warehouse group is 'Central' and the items have expired dates, joining inventory movements with purchase details for items bought on credit?",
+        "sql": "SELECT SUM(i.NET_INCOMING_QUANTITY) AS total_net_incoming_quantity, SUM(i.STOCK_COST) AS total_stock_cost FROM INV_V_ITM_MOVMNT_AI i JOIN PURCHS_BILL_DTL_AI_VW p ON i.ITEM_CODE = p.ITM_CODE AND i.DOCUMENT_DATE = p.DOC_DATE WHERE i.SEASONAL_ITEM = 'Y' AND i.MANUFACTURE_COUNTRY = 'USA' AND i.INCOMING_OUTGOING = 'Incoming' AND i.WAREHOUSE_GROUP_NAME = 'Central' AND i.USE_EXPIRE_DATE = 'Y' AND EXISTS (SELECT 1 FROM PURCHS_BILL_MST_AI_VW m WHERE m.DOC_NO = p.DOC_NO AND m.PYMNT_CRDT > 0 AND m.FINANCE_PERIOD_NAME = i.FINANCE_PERIOD_NAME)"
+    },
+    {
+        "text": "List the vendor names and total discount amounts for purchases of items with batch numbers that were later used in work orders for recycled products, where the work order status is holding and the actual cost exceeds standard cost by more than 20%, involving complex joins across purchases, inventory, and MRP tables.",
+        "sql": "SELECT v.VNDR_NM, SUM(p.ITM_DSCNT_AMT) AS total_discount_amount FROM PURCHS_BILL_MST_AI_VW v JOIN PURCHS_BILL_DTL_AI_VW p ON v.DOC_NO = p.DOC_NO JOIN INV_V_ITM_MOVMNT_AI i ON p.ITM_CODE = i.ITEM_CODE AND p.WRHS_CODE = i.WAREHOUSE_CODE JOIN MRP_WORK_ORDER_AI_VW w ON i.ITEM_CODE = w.ITEM_CODE WHERE i.USING_BATCH_NUMBER = 'Y' AND w.ITEM_CLASS = 4 AND w.WORK_ORDER_STATUS = 2 AND w.TOTAL_ACTUAL_COST > w.TOTAL_STANDARD_COST * 1.20 GROUP BY v.VNDR_NM"
+    },
+    {
+        "text": "Find the employee names and their managed groups for employees who collected payments for sales returns of object reuse exchange items that had negative net outgoing quantities in inventory movements, linked to GL postings where currency difference exists.",
+        "sql": "SELECT e.EMP_L_NM, e.GRP_NO_NM FROM GNR_EMP_AI_VW e JOIN SALES_RT_BILL_MST_AI_VW s ON e.EMP_NO = s.CLCTR_CODE JOIN INV_V_ITM_MOVMNT_AI i ON s.WRHS_CODE = i.WAREHOUSE_CODE AND s.DOC_DATE = i.DOCUMENT_DATE JOIN GLS_PST_AI_VW g ON s.DOC_NO = g.DOC_NO WHERE i.OBJECT_REUSE_EXCHANGE_ITEM = 'Y' AND i.NET_OUTGOING_QUANTITY < 0 AND g.IS_CRNCY_DFRNC = 1"
+    },
+    {
+        "text": "Calculate the average item cost in warehouse for kits items that were sold via points replacement and returned due to expiration, joining sales, sales returns, and inventory movements for rare cases where free quantity exceeds paid quantity.",
+        "sql": "SELECT AVG(i.ITEM_COST_WAREHOUSE_AVERAGE) AS average_item_cost FROM INV_V_ITM_MOVMNT_AI i JOIN SALES_BILL_DTL_AI_VW sd ON i.ITEM_CODE = sd.ITM_CODE JOIN SALES_BILL_MST_AI_VW sm ON sd.DOC_NO = sm.DOC_NO JOIN SALES_RT_BILL_DTL_AI_VW rd ON sd.ITM_CODE = rd.ITM_CODE AND sm.CSTMR_CODE = (SELECT CSTMR_CODE FROM SALES_RT_BILL_MST_AI_VW WHERE DOC_NO = rd.DOC_NO) WHERE i.KIT_ITEM = 'Y' AND sm.PYMNT_POINT_RPLC > 0 AND rd.EXP_DATE < CURRENT_DATE AND sd.ITM_FREE_QTY > sd.ITM_QTY"
+    },
+    {
+        "text": "Retrieve the project names and total value added tax amounts from inventory movements for items with harmonized system nomenclature starting with '84' that were purchased from vendors who are also employees, in rare dual-role scenarios.",
+        "sql": "SELECT i.PROJECT_NAME, SUM(i.VALUE_ADDED_TAX_AMOUNT) AS total_vat_amount FROM INV_V_ITM_MOVMNT_AI i JOIN PURCHS_BILL_MST_AI_VW p ON i.VENDOR_CODE = p.VNDR_CODE AND i.DOCUMENT_DATE = p.DOC_DATE JOIN GNR_EMP_AI_VW e ON p.VNDR_CODE = e.EMP_NO WHERE i.HARMONIZED_SYSTEM_NOMENCLATURE LIKE '84%' GROUP BY i.PROJECT_NAME"
+    },
+    {
+        "text": "What are the customer names and total other amounts for sales of branded items that were produced in work orders sourced from customer orders, but had scrap quantity over 10% of work order quantity, joining sales, MRP, and inventory.",
+        "sql": "SELECT s.CSTMR_NM, SUM(s.OTHR_AMT) AS total_other_amount FROM SALES_BILL_MST_AI_VW s JOIN SALES_BILL_DTL_AI_VW sd ON s.DOC_NO = sd.DOC_NO JOIN INV_V_ITM_MOVMNT_AI i ON sd.ITM_CODE = i.ITEM_CODE JOIN MRP_WORK_ORDER_AI_VW w ON i.ITEM_CODE = w.ITEM_CODE WHERE i.BRAND IS NOT NULL AND w.WORK_ORDER_SOURCE = 2 AND w.SCRAP_QTY > w.WORK_ORDER_QTY * 0.10 GROUP BY s.CSTMR_NM"
+    },
+    {
+        "text": "List the warehouse names and available quantities for items using serial numbers that were involved in outgoing movements to cost centers linked to employees on probation, in rare HR-inventory crossover.",
+        "sql": "SELECT i.WAREHOUSE_NAME, SUM(i.AVAILABLE_QUANTITY) AS total_available_quantity FROM INV_V_ITM_MOVMNT_AI i JOIN GNR_EMP_AI_VW e ON i.COST_CENTER_CODE = e.GRP_NO WHERE i.USING_SERIAL_NUMBER = 'Y' AND i.INCOMING_OUTGOING = 'Outgoing' AND e.END_TST_PRD_DATE > CURRENT_DATE GROUP BY i.WAREHOUSE_NAME"
+    },
+    {
+        "text": "Find the total debit amounts in local currency from GL postings for bank accounts related to purchases of items with alternative codes, where the vendor payment method is cheque and the item was later returned in sales.",
+        "sql": "SELECT SUM(g.DR_AMT_L) AS total_debit_local FROM GLS_PST_AI_VW g JOIN PURCHS_BILL_MST_AI_VW p ON g.DOC_NO = p.DOC_NO JOIN PURCHS_BILL_DTL_AI_VW pd ON p.DOC_NO = pd.DOC_NO JOIN SALES_RT_BILL_DTL_AI_VW rd ON pd.ITM_CODE = rd.ITM_CODE WHERE g.AC_DTL_TYP = 2 AND pd.ITM_CODE IN (SELECT ITEM_CODE FROM INV_V_ITM_MOVMNT_AI WHERE ALTERBATIVE_CODE IS NOT NULL) AND p.CHQ_NOTE_NO IS NOT NULL"
+    },
+    {
+        "text": "Calculate the variance between standard and actual labor costs for work orders of semi-products that were sold to customers with specific regions, joining MRP, sales, and inventory for rare production-sales mismatches.",
+        "sql": "SELECT SUM(w.LABOR_ACTUAL_COST - w.LABOR_STANDARD_COST) AS labor_cost_variance FROM MRP_WORK_ORDER_AI_VW w JOIN INV_V_ITM_MOVMNT_AI i ON w.ITEM_CODE = i.ITEM_CODE JOIN SALES_BILL_MST_AI_VW s ON i.ITEM_CODE = (SELECT ITM_CODE FROM SALES_BILL_DTL_AI_VW WHERE DOC_NO = s.DOC_NO) WHERE w.ITEM_CLASS = 2 AND s.RGN_NO = 'North' AND i.INCOMING_OUTGOING = 'Outgoing'"
+    },
+    {
+        "text": "Retrieve the item names and total tax amounts for purchases where the tax category is free quantity but the item was incoming from a foreign country and linked to GL postings with opening balance.",
+        "sql": "SELECT i.ITEM_NAME, SUM(pd.ITM_TOTL_TAX_AMT) AS total_tax_amount FROM PURCHS_BILL_DTL_AI_VW pd JOIN PURCHS_BILL_MST_AI_VW pm ON pd.DOC_NO = pm.DOC_NO JOIN INV_V_ITM_MOVMNT_AI i ON pd.ITM_CODE = i.ITEM_CODE JOIN GLS_PST_AI_VW g ON pm.DOC_NO = g.DOC_NO WHERE pm.CLC_TAX_FREE_QTY_FLG = 1 AND i.COUNTRY_NAME <> 'Local' AND g.IS_OPN_BLNC = 1 GROUP BY i.ITEM_NAME"
+    },
+    {
+        "text": "What is the total outgoing quantity and discount details for items in assistant groups that were returned due to quality issues, linked to work orders closed with high breakdown time, in rare quality-control scenarios.",
+        "sql": "SELECT SUM(i.OUTGOING_QUANTITY) AS total_outgoing_quantity, SUM(i.DISCOUNT_AMOUNT_DETAIL) AS total_discount_detail FROM INV_V_ITM_MOVMNT_AI i JOIN SALES_RT_BILL_DTL_AI_VW rd ON i.ITEM_CODE = rd.ITM_CODE JOIN SALES_RT_BILL_MST_AI_VW rm ON rd.DOC_NO = rm.DOC_NO JOIN MRP_WORK_ORDER_AI_VW w ON i.ITEM_CODE = w.ITEM_CODE WHERE i.ASISTANT_GROUP_CODE IS NOT NULL AND rm.RESON_DESC LIKE UPPER('%quality%') AND w.WORK_ORDER_STATUS = 4 AND w.BREAKDOWN_TIME > w.STANDARD_TIME"
+    },
+    {
+        "text": "List the employee nationalities and total credit amounts from GL for vendors who are foreign employees supplying items with GTIN codes in purchases exceeding average stock cost.",
+        "sql": "SELECT e.NTNLTY_NM, SUM(g.CR_AMT_L) AS total_credit_amount FROM GNR_EMP_AI_VW e JOIN PURCHS_BILL_MST_AI_VW p ON e.EMP_NO = p.VNDR_CODE JOIN GLS_PST_AI_VW g ON p.DOC_NO = g.DOC_NO JOIN INV_V_ITM_MOVMNT_AI i ON p.DOC_NO = (SELECT DOC_NO FROM PURCHS_BILL_DTL_AI_VW WHERE ITM_CODE = i.ITEM_CODE) WHERE i.GLOBAL_TRAD_ITEM_NUMBER_CODE IS NOT NULL AND i.STOCK_COST > (SELECT AVG(STOCK_COST) FROM INV_V_ITM_MOVMNT_AI) GROUP BY e.NTNLTY_NM"
+    },
+    {
+        "text": "Find the branch names and total free incoming quantities for items using attachments that were produced manually in work orders and sold via bank payments in rare manual production cycles.",
+        "sql": "SELECT i.BRANCH_NAME, SUM(i.FREE_INCOMING_QUANTITY) AS total_free_incoming FROM INV_V_ITM_MOVMNT_AI i JOIN MRP_WORK_ORDER_AI_VW w ON i.ITEM_CODE = w.ITEM_CODE JOIN SALES_BILL_MST_AI_VW s ON i.ITEM_CODE = (SELECT ITM_CODE FROM SALES_BILL_DTL_AI_VW WHERE DOC_NO = s.DOC_NO) WHERE i.USING_ITEM_ATTACHMENT = 'Y' AND w.WORK_ORDER_SOURCE = 0 AND s.PYMNT_BNK > 0 GROUP BY i.BRANCH_NAME"
+    },
+    {
+        "text": "Calculate the total other VAT amounts and item areas for under subgroup items incoming from provinces with specific codes, linked to sales returns where commission percent is zero.",
+        "sql": "SELECT SUM(i.OTHER_VALUE_ADDED_TAX_AMOUNT) AS total_other_vat, SUM(i.ITEM_AREA) AS total_item_area FROM INV_V_ITM_MOVMNT_AI i JOIN SALES_RT_BILL_MST_AI_VW rm ON i.PROVINCE_NUMBER = rm.SUB_LDGR1_CODE JOIN SALES_RT_BILL_DTL_AI_VW rd ON rm.DOC_NO = rd.DOC_NO WHERE i.UNDER_SUBGROUP_CODE IS NOT NULL AND i.INCOMING_OUTGOING = 'Incoming' AND i.PROVINCE_NUMBER = '01' AND rm.COMM_PRCNT = 0"
+    },
+    {
+        "text": "Retrieve the activity names and total net sales quantities for items in detail groups that were purchased with additional discounts and posted in GL as other credits in rare accounting adjustments.",
+        "sql": "SELECT i.ACTIVITY_NAME, SUM(i.NET_SALES_QUANTITY) AS total_net_sales_quantity FROM INV_V_ITM_MOVMNT_AI i JOIN PURCHS_BILL_MST_AI_VW pm ON i.DOCUMENT_DATE = pm.DOC_DATE AND i.ITEM_CODE = (SELECT ITM_CODE FROM PURCHS_BILL_DTL_AI_VW WHERE DOC_NO = pm.DOC_NO) JOIN GLS_PST_AI_VW g ON pm.DOC_NO = g.DOC_NO WHERE i.DETAIL_GROUP_CODE IS NOT NULL AND pm.DSCNT_AMT_ADD > 0 AND g.AC_DTL_TYP = 6"
+    },
+    {
+        "text": "What are the manufacture company names and total actual machine costs for work orders approved but with deliver quantity less than product quantity, linked to inventory outgoing to specific regions.",
+        "sql": "SELECT i.MANUFACTURE_COMPANY, SUM(w.MACHINE_ACTUAL_COST) AS total_machine_actual_cost FROM MRP_WORK_ORDER_AI_VW w JOIN INV_V_ITM_MOVMNT_AI i ON w.ITEM_CODE = i.ITEM_CODE WHERE w.WORK_ORDER_STATUS = 1 AND w.DELIVER_QTY < w.PRODUCT_QTY AND i.INCOMING_OUTGOING = 'Outgoing' AND i.REGION_CODE = 'East' GROUP BY i.MANUFACTURE_COMPANY"
+    },
+    {
+        "text": "List the customer mobile numbers and total replacement amounts for sales of items with material requirement planning enabled, returned for reasons involving tax bill type changes, in rare tax-related returns.",
+        "sql": "SELECT s.CSTMR_MOBILE, SUM(s.RPLC_AMT) AS total_replacement_amount FROM SALES_BILL_MST_AI_VW s JOIN SALES_RT_BILL_MST_AI_VW rm ON s.CSTMR_CODE = rm.CSTMR_CODE JOIN INV_V_ITM_MOVMNT_AI i ON s.DOC_NO = (SELECT DOC_NO FROM SALES_BILL_DTL_AI_VW WHERE ITM_CODE = i.ITEM_CODE) WHERE i.MATERIAL_REQUIREMENT_PLANING = 'Y' AND rm.RESON_TYP LIKE '%tax%' AND s.TAX_BILL_TYP <> rm.TAX_BILL_TYP GROUP BY s.CSTMR_MOBILE"
+    },
+    {
+        "text": "Find the total indirect cost variances and item weights for alternative group items in work orders from production scheduling, purchased from banks as payment method in unusual financing scenarios.",
+        "sql": "SELECT SUM(w.INDIRECT_ACTUAL_COST - w.INDIRECT_STANDARD_COST) AS indirect_cost_variance, SUM(i.ITEM_WEIGHT) AS total_item_weight FROM MRP_WORK_ORDER_AI_VW w JOIN INV_V_ITM_MOVMNT_AI i ON w.ITEM_CODE = i.ITEM_CODE JOIN PURCHS_BILL_MST_AI_VW p ON i.ITEM_CODE = (SELECT ITM_CODE FROM PURCHS_BILL_DTL_AI_VW WHERE DOC_NO = p.DOC_NO) WHERE i.ALTRNATIVE_GROUP_CODE IS NOT NULL AND w.WORK_ORDER_SOURCE = 3 AND p.PYMNT_BNK > 0 GROUP BY i.ALTRNATIVE_GROUP_NAME"
+    },
+    {
+        "text": "Calculate the average height from transactions for items in categories using expire dates, sold to employees as customers and posted in GL with manual numbers, in rare internal sales.",
+        "sql": "SELECT AVG(i.HEIGHT_FROM_TRANSACTION) AS average_height FROM INV_V_ITM_MOVMNT_AI i JOIN SALES_BILL_MST_AI_VW s ON i.ITEM_CODE = (SELECT ITM_CODE FROM SALES_BILL_DTL_AI_VW WHERE DOC_NO = s.DOC_NO) JOIN GNR_EMP_AI_VW e ON s.CSTMR_CODE = e.EMP_NO JOIN GLS_PST_AI_VW g ON s.DOC_NO = g.DOC_NO WHERE i.ITEM_CATEGORY_NUMBER IS NOT NULL AND i.USE_EXPIRE_DATE = 'Y' AND g.MNL_NO IS NOT NULL"
+    },
+    {
+        "text": "Retrieve the country names and total credit amounts local for vendors in purchases linked to sales returns of the same items with service flags, and GL postings for profit and loss accounts in complex reconciliation scenarios.",
+        "sql": "SELECT i.COUNTRY_NAME, SUM(s.CRDT_AMT_LOCAL) AS total_credit_local FROM PURCHS_BILL_MST_AI_VW p JOIN INV_V_ITM_MOVMNT_AI i ON p.VNDR_CODE = i.VENDOR_CODE JOIN SALES_RT_BILL_DTL_AI_VW rd ON i.ITEM_CODE = rd.ITM_CODE JOIN SALES_RT_BILL_MST_AI_VW rm ON rd.DOC_NO = rm.DOC_NO JOIN GLS_PST_AI_VW g ON rm.DOC_NO = g.DOC_NO WHERE rd.SRVC_FLG = 1 AND g.AC_TYP = 0 GROUP BY i.COUNTRY_NAME"
+    },
+    {
+        "text": "What is the total sales amount for each customer, including the total quantity sold and the associated employee name, for sales bills in the year 2025, joining sales master, details, and employees?",
+        "sql": "SELECT SBM.CSTMR_CODE, SBM.CSTMR_NM AS Customer_Name, SUM(SBD.ITM_TOTL_AMT) AS Total_Sales_Amount, SUM(SBD.ITM_QTY) AS Total_Quantity, EMP.EMP_L_NM AS Employee_Name FROM SALES_BILL_MST_AI_VW SBM INNER JOIN SALES_BILL_DTL_AI_VW SBD ON SBM.DOC_NO = SBD.DOC_NO AND SBM.DOC_SRL = SBD.DOC_SRL AND SBM.YR_NO = SBD.YR_NO AND SBM.UNT_NO = SBD.UNT_NO INNER JOIN GNR_EMP_AI_VW EMP ON SBM.EMP_CODE = EMP.EMP_NO WHERE SBM.YR_NO = 2025 GROUP BY SBM.CSTMR_CODE, SBM.CSTMR_NM, EMP.EMP_L_NM;"
+    },
+    {
+        "text": "List the top 10 items by total incoming quantity from inventory movements, including their purchase bill details like vendor name and total purchase amount, for items with expire dates.",
+        "sql": "SELECT IVM.ITEM_CODE, IVM.ITEM_NAME, SUM(IVM.INCOMING_QUANTITY) AS Total_Incoming_Quantity, PBM.VNDR_NM AS Vendor_Name, SUM(PBD.ITM_TOTL_AMT) AS Total_Purchase_Amount FROM INV_V_ITM_MOVMNT_AI IVM INNER JOIN PURCHS_BILL_DTL_AI_VW PBD ON IVM.ITEM_CODE = PBD.ITM_CODE AND IVM.EXPIRE_DATE = PBD.EXP_DATE INNER JOIN PURCHS_BILL_MST_AI_VW PBM ON PBD.DOC_NO = PBM.DOC_NO AND PBD.DOC_SRL = PBM.DOC_SRL AND PBD.YR_NO = PBM.YR_NO AND PBD.UNT_NO = PBM.UNT_NO WHERE IVM.USING_EXPIRE_DATE = 'Y' GROUP BY IVM.ITEM_CODE, IVM.ITEM_NAME, PBM.VNDR_NM ORDER BY Total_Incoming_Quantity DESC LIMIT 10;"
+    },
+    {
+        "text": "Show the cash movements for vendors, including debit and credit amounts from GL postings, joined with purchase bills and employee responsible.",
+        "sql": "SELECT GP.AC_CODE_DTL AS Vendor_Code, GP.AC_DTL_NM AS Vendor_Name, SUM(GP.DR_AMT_L) AS Total_Debit, SUM(GP.CR_AMT_L) AS Total_Credit, PBM.VNDR_NM, EMP.EMP_L_NM AS Employee_Name FROM GLS_PST_AI_VW GP INNER JOIN PURCHS_BILL_MST_AI_VW PBM ON GP.DOC_NO = PBM.DOC_NO AND GP.DOC_SRL = PBM.DOC_SRL AND GP.AC_DTL_TYP = 4 INNER JOIN GNR_EMP_AI_VW EMP ON PBM.CRT_USR = EMP.EMP_NO WHERE GP.AC_DTL_TYP = 1 GROUP BY GP.AC_CODE_DTL, GP.AC_DTL_NM, PBM.VNDR_NM, EMP.EMP_L_NM;"
+    },
+    {
+        "text": "Find the total discount amount given on sales returns for each item, including the original sales bill details and warehouse name from inventory movements.",
+        "sql": "SELECT SRBD.ITM_CODE, SUM(SRBD.ITM_TOTL_DSCNT_AMT) AS Total_Discount, SBM.DOC_NO AS Original_Sales_Doc, IVM.WAREHOUSE_NAME FROM SALES_RT_BILL_DTL_AI_VW SRBD INNER JOIN SALES_RT_BILL_MST_AI_VW SRBM ON SRBD.DOC_NO = SRBM.DOC_NO AND SRBD.DOC_SRL = SRBM.DOC_SRL INNER JOIN SALES_BILL_MST_AI_VW SBM ON SRBD.DOC_NO_REF_BILL = SBM.DOC_NO AND SRBD.DOC_SRL_REF_BILL = SBM.DOC_SRL INNER JOIN INV_V_ITM_MOVMNT_AI IVM ON SRBD.ITM_CODE = IVM.ITEM_CODE AND SRBD.WRHS_CODE = IVM.WAREHOUSE_CODE GROUP BY SRBD.ITM_CODE, SBM.DOC_NO, IVM.WAREHOUSE_NAME;"
+    },
+    {
+        "text": "Report the employee-wise total purchase amount, joining employees, purchase master, and GL postings for balance sheet accounts.",
+        "sql": "SELECT EMP.EMP_NO, EMP.EMP_L_NM AS Employee_Name, SUM(PBM.TOTL_BILL_AMT) AS Total_Purchase_Amount, SUM(GP.DR_AMT_L - GP.CR_AMT_L) AS Net_Balance FROM GNR_EMP_AI_VW EMP INNER JOIN PURCHS_BILL_MST_AI_VW PBM ON EMP.EMP_NO = PBM.CRT_USR INNER JOIN GLS_PST_AI_VW GP ON PBM.DOC_NO = GP.DOC_NO AND PBM.DOC_SRL = GP.DOC_SRL WHERE GP.AC_TYP = 1 GROUP BY EMP.EMP_NO, EMP.EMP_L_NM;"
+    },
+    {
+        "text": "List items with their stock cost from inventory, total sales quantity from sales details, and production quantity from work orders, for finished products.",
+        "sql": "SELECT IVM.ITEM_CODE, IVM.ITEM_NAME, AVG(IVM.STOCK_COST) AS Average_Stock_Cost, SUM(SBD.ITM_QTY) AS Total_Sales_Quantity, SUM(MWO.PRODUCT_QTY) AS Total_Production_Quantity FROM INV_V_ITM_MOVMNT_AI IVM INNER JOIN SALES_BILL_DTL_AI_VW SBD ON IVM.ITEM_CODE = SBD.ITM_CODE INNER JOIN MRP_WORK_ORDER_AI_VW MWO ON IVM.ITEM_CODE = MWO.ITEM_CODE WHERE MWO.ITEM_CLASS = 1 AND IVM.ITEM_CATEGORY_NUMBER = MWO.ITEM_CLASS GROUP BY IVM.ITEM_CODE, IVM.ITEM_NAME;"
+    },
+    {
+        "text": "Calculate the total tax amount collected from sales and purchases for each vendor/customer, joining sales, purchases, and GL.",
+        "sql": "SELECT COALESCE(PBM.VNDR_CODE, SBM.CSTMR_CODE) AS Party_Code, COALESCE(PBM.VNDR_NM, SBM.CSTMR_NM) AS Party_Name, SUM(PBM.TAX_AMT) AS Purchase_Tax, SUM(SBM.TAX_AMT) AS Sales_Tax, SUM(GP.DR_AMT_L) AS Debit_From_GL FROM PURCHS_BILL_MST_AI_VW PBM FULL OUTER JOIN SALES_BILL_MST_AI_VW SBM ON PBM.VNDR_CODE = SBM.CSTMR_CODE INNER JOIN GLS_PST_AI_VW GP ON COALESCE(PBM.DOC_NO, SBM.DOC_NO) = GP.DOC_NO GROUP BY COALESCE(PBM.VNDR_CODE, SBM.CSTMR_CODE), COALESCE(PBM.VNDR_NM, SBM.CSTMR_NM);"
+    },
+    {
+        "text": "Show the breakdown time in work orders for items that have outgoing movements in inventory, including sales return details.",
+        "sql": "SELECT MWO.WORK_ORDER_NO, MWO.BREAKDOWN_TIME, IVM.ITEM_CODE, SUM(IVM.OUTGOING_QUANTITY) AS Total_Outgoing, SRBM.RESON_DESC AS Return_Reason FROM MRP_WORK_ORDER_AI_VW MWO INNER JOIN INV_V_ITM_MOVMNT_AI IVM ON MWO.ITEM_CODE = IVM.ITEM_CODE AND MWO.WORK_ORDER_DATE = IVM.DOCUMENT_DATE INNER JOIN SALES_RT_BILL_MST_AI_VW SRBM ON IVM.ITEM_CODE = SRBM.CSTMR_CODE WHERE IVM.OUTGOING_QUANTITY > 0 GROUP BY MWO.WORK_ORDER_NO, MWO.BREAKDOWN_TIME, IVM.ITEM_CODE, SRBM.RESON_DESC;"
+    },
+    {
+        "text": "Find the average item price from purchases and sales for each item group, joining inventory, purchase details, and sales details.",
+        "sql": "SELECT IVM.ITEM_GROUP_CLASS_NAME AS Item_Group, AVG(PBD.ITM_PRICE) AS Avg_Purchase_Price, AVG(SBD.ITM_PRICE) AS Avg_Sales_Price FROM INV_V_ITM_MOVMNT_AI IVM INNER JOIN PURCHS_BILL_DTL_AI_VW PBD ON IVM.ITEM_CODE = PBD.ITM_CODE INNER JOIN SALES_BILL_DTL_AI_VW SBD ON IVM.ITEM_CODE = SBD.ITM_CODE GROUP BY IVM.ITEM_GROUP_CLASS_NAME;"
+    },
+    {
+        "text": "Report the total credit amount for each salesman from GL postings, linked to sales bills and employee data.",
+        "sql": "SELECT GP.SMAN_CODE_NM AS Salesman_Name, SUM(GP.CR_AMT_L) AS Total_Credit, SBM.CSTMR_NM AS Customer, EMP.EMP_L_NM AS Employee FROM GLS_PST_AI_VW GP INNER JOIN SALES_BILL_MST_AI_VW SBM ON GP.DOC_NO = SBM.DOC_NO AND GP.DOC_SRL = SBM.DOC_SRL INNER JOIN GNR_EMP_AI_VW EMP ON GP.SMAN_CODE = EMP.EMP_NO GROUP BY GP.SMAN_CODE_NM, SBM.CSTMR_NM, EMP.EMP_L_NM;"
+    },
+    {
+        "text": "List vendors with their total other amounts from purchases, including item movements and work order costs for related items.",
+        "sql": "SELECT PBM.VNDR_NM AS Vendor_Name, SUM(PBM.OTHR_AMT) AS Total_Other_Amount, SUM(IVM.NET_OUTGOING_QUANTITY) AS Net_Outgoing, AVG(MWO.INDIRECT_ACTUAL_COST) AS Avg_Indirect_Cost FROM PURCHS_BILL_MST_AI_VW PBM INNER JOIN PURCHS_BILL_DTL_AI_VW PBD ON PBM.DOC_NO = PBD.DOC_NO INNER JOIN INV_V_ITM_MOVMNT_AI IVM ON PBD.ITM_CODE = IVM.ITEM_CODE INNER JOIN MRP_WORK_ORDER_AI_VW MWO ON IVM.ITEM_CODE = MWO.ITEM_CODE GROUP BY PBM.VNDR_NM;"
+    },
+    {
+        "text": "Calculate the variance between standard and actual costs in work orders, for items sold in sales and returned in sales returns.",
+        "sql": "SELECT MWO.ITEM_CODE, (MWO.TOTAL_STANDARD_COST - MWO.TOTAL_ACTUAL_COST) AS Cost_Variance, SUM(SBD.ITM_QTY) AS Sold_Quantity, SUM(SRBD.ITM_QTY) AS Returned_Quantity FROM MRP_WORK_ORDER_AI_VW MWO INNER JOIN SALES_BILL_DTL_AI_VW SBD ON MWO.ITEM_CODE = SBD.ITM_CODE INNER JOIN SALES_RT_BILL_DTL_AI_VW SRBD ON MWO.ITEM_CODE = SRBD.ITM_CODE GROUP BY MWO.ITEM_CODE, MWO.TOTAL_STANDARD_COST, MWO.TOTAL_ACTUAL_COST;"
+    },
+    {
+        "text": "Show customer-wise total replacement amount from sales, including GL debit amounts and inventory available quantity.",
+        "sql": "SELECT SBM.CSTMR_NM AS Customer_Name, SUM(SBM.RPLC_AMT) AS Total_Replacement, SUM(GP.DR_AMT_L) AS Total_Debit, AVG(IVM.AVAILABLE_QUANTITY) AS Avg_Available FROM SALES_BILL_MST_AI_VW SBM INNER JOIN GLS_PST_AI_VW GP ON SBM.DOC_NO = GP.DOC_NO INNER JOIN INV_V_ITM_MOVMNT_AI IVM ON SBM.WRHS_CODE = IVM.WAREHOUSE_CODE GROUP BY SBM.CSTMR_NM;"
+    },
+    {
+        "text": "Find the total free quantity given in purchases and sales for each item, joining details and inventory with batch numbers.",
+        "sql": "SELECT IVM.ITEM_CODE, IVM.BATCH_NUMBER, SUM(PBD.ITM_TOTL_FREE_QTY) AS Purchase_Free_Qty, SUM(SBD.ITM_TOTL_FREE_QTY) AS Sales_Free_Qty FROM INV_V_ITM_MOVMNT_AI IVM INNER JOIN PURCHS_BILL_DTL_AI_VW PBD ON IVM.ITEM_CODE = PBD.ITM_CODE AND IVM.BATCH_NUMBER IS NOT NULL INNER JOIN SALES_BILL_DTL_AI_VW SBD ON IVM.ITEM_CODE = SBD.ITM_CODE GROUP BY IVM.ITEM_CODE, IVM.BATCH_NUMBER;"
+    },
+    {
+        "text": "Report the total bank payments for purchases and sales, linked to GL postings and employee nationality.",
+        "sql": "SELECT EMP.NTNLTY_NM AS Employee_Nationality, SUM(PBM.PYMNT_BNK) AS Purchase_Bank_Payment, SUM(SBM.PYMNT_BNK) AS Sales_Bank_Payment, SUM(GP.CR_AMT_L) AS Credit_From_GL FROM GNR_EMP_AI_VW EMP INNER JOIN PURCHS_BILL_MST_AI_VW PBM ON EMP.EMP_NO = PBM.CRT_USR INNER JOIN SALES_BILL_MST_AI_VW SBM ON EMP.EMP_NO = SBM.EMP_CODE INNER JOIN GLS_PST_AI_VW GP ON PBM.DOC_NO = GP.DOC_NO WHERE GP.AC_DTL_TYP = 2 GROUP BY EMP.NTNLTY_NM;"
+    },
+    {
+        "text": "List items with their harmonized system code from inventory, total tax from sales returns, and scrap quantity from work orders.",
+        "sql": "SELECT IVM.ITEM_CODE, IVM.HARMONIZED_SYSTEM_NOMENCLATURE, SUM(SRBD.ITM_TOTL_TAX_AMT) AS Total_Return_Tax, SUM(MWO.SCRAP_QTY) AS Total_Scrap FROM INV_V_ITM_MOVMNT_AI IVM INNER JOIN SALES_RT_BILL_DTL_AI_VW SRBD ON IVM.ITEM_CODE = SRBD.ITM_CODE INNER JOIN MRP_WORK_ORDER_AI_VW MWO ON IVM.ITEM_CODE = MWO.ITEM_CODE GROUP BY IVM.ITEM_CODE, IVM.HARMONIZED_SYSTEM_NOMENCLATURE;"
+    },
+    {
+        "text": "Calculate the net incoming value added tax from inventory movements, for items purchased and posted in GL as balance sheet.",
+        "sql": "SELECT IVM.ITEM_CODE, SUM(IVM.VALUE_ADDED_TAX_AMOUNT) AS Net_VAT, PBM.VNDR_NM AS Vendor, GP.AC_TYP FROM INV_V_ITM_MOVMNT_AI IVM INNER JOIN PURCHS_BILL_MST_AI_VW PBM ON IVM.DOCUMENT_TYPE = PBM.TYP_NO INNER JOIN GLS_PST_AI_VW GP ON PBM.DOC_NO = GP.DOC_NO WHERE IVM.NET_INCOMING_QUANTITY > 0 AND GP.AC_TYP = 1 GROUP BY IVM.ITEM_CODE, PBM.VNDR_NM, GP.AC_TYP;"
+    },
+    {
+        "text": "Show the total labor cost variance in work orders for semi-products, including sales quantity and purchase cost from details.",
+        "sql": "SELECT MWO.WORK_ORDER_NO, (MWO.LABOR_STANDARD_COST - MWO.LABOR_ACTUAL_COST) AS Labor_Variance, SUM(SBD.ITM_QTY) AS Sales_Qty, AVG(PBD.ITM_STK_CST) AS Avg_Purchase_Cost FROM MRP_WORK_ORDER_AI_VW MWO INNER JOIN SALES_BILL_DTL_AI_VW SBD ON MWO.ITEM_CODE = SBD.ITM_CODE INNER JOIN PURCHS_BILL_DTL_AI_VW PBD ON MWO.ITEM_CODE = PBD.ITM_CODE WHERE MWO.ITEM_CLASS = 2 GROUP BY MWO.WORK_ORDER_NO, MWO.LABOR_STANDARD_COST, MWO.LABOR_ACTUAL_COST;"
+    },
+    {
+        "text": "Find the top 5 employees by total sales amount, including their grade, and linked to inventory brand and manufacturer.",
+        "sql": "SELECT EMP.EMP_L_NM AS Employee_Name, EMP.GRD_NO_NM AS Grade, SUM(SBM.CSH_AMT + SBM.CRDT_AMT) AS Total_Sales, IVM.BRAND, IVM.MANUFACTURE_COMPANY FROM GNR_EMP_AI_VW EMP INNER JOIN SALES_BILL_MST_AI_VW SBM ON EMP.EMP_NO = SBM.EMP_CODE INNER JOIN SALES_BILL_DTL_AI_VW SBD ON SBM.DOC_NO = SBD.DOC_NO INNER JOIN INV_V_ITM_MOVMNT_AI IVM ON SBD.ITM_CODE = IVM.ITEM_CODE GROUP BY EMP.EMP_L_NM, EMP.GRD_NO_NM, IVM.BRAND, IVM.MANUFACTURE_COMPANY ORDER BY Total_Sales DESC LIMIT 5;"
+    },
+    {
+        "text": "What is the total debit amount in local currency for all profit and loss accounts in the general ledger postings for the year 2024?",
+        "sql": "SELECT SUM(DR_AMT_L) AS total_debit FROM GLS_PST_AI_VW WHERE AC_TYP = 0 AND DOC_DATE BETWEEN '2024-01-01' AND '2024-12-31';"
+    },
+    {
+        "text": "List the top 5 vendors by total purchase amount in local currency from purchase bills, including vendor name and total amount, for purchases made in the last quarter.",
+        "sql": "SELECT VNDR_NM AS vendor_name, SUM(TOTL_BILL_AMT_LOCAL) AS total_purchase FROM PURCHS_BILL_MST_AI_VW WHERE DOC_DATE >= DATEADD(QUARTER, -1, GETDATE()) GROUP BY VNDR_NM ORDER BY total_purchase DESC LIMIT 5;"
+    },
+    {
+        "text": "Calculate the net sales amount after discounts and taxes for each customer in the sales bills master table for the month of October 2025.",
+        "sql": "SELECT CSTMR_CODE AS customer_code, CSTMR_NM AS customer_name, SUM(TOTL_BILL_AMT_LOCAL - DSCNT_AMT_LOCAL - TAX_AMT_LOCAL) AS net_sales FROM SALES_BILL_MST_AI_VW WHERE MONTH(DOC_DATE) = 10 AND YEAR(DOC_DATE) = 2025 GROUP BY CSTMR_CODE, CSTMR_NM;"
+    },
+    {
+        "text": "What is the average item cost in warehouse average for incoming inventory movements of items in the 'Electronics' item group during 2023?",
+        "sql": "SELECT AVG(ITEM_COST_WAREHOUSE_AVERAGE) AS average_cost FROM INV_V_ITM_MOVMNT_AI WHERE INCOMING_OUTGOING = 'Incoming' AND ITEM_GROUP_CLASS_NAME LIKE '%Electronics%' AND YEAR(DOCUMENT_DATE) = 2023;"
+    },
+    {
+        "text": "Provide a breakdown of credit amounts by account type in the general ledger for documents posted by employee number 1001.",
+        "sql": "SELECT AC_TYP AS account_type, SUM(CR_AMT_L) AS total_credit FROM GLS_PST_AI_VW WHERE EMP_NO = 1001 GROUP BY AC_TYP;"
+    },
+    {
+        "text": "Find the total tax amount collected from sales returns for items with expiration dates in the next 6 months.",
+        "sql": "SELECT SUM(ITM_TOTL_TAX_AMT) AS total_tax FROM SALES_RT_BILL_DTL_AI_VW WHERE EXP_DATE BETWEEN GETDATE() AND DATEADD(MONTH, 6, GETDATE());"
+    },
+    {
+        "text": "What is the balance for each cash account (AC_DTL_TYP = 1) as of the end of the fiscal year 2024, calculated as sum of debits minus sum of credits?",
+        "sql": "SELECT AC_CODE_DTL AS account_number, AC_DTL_NM AS account_name, SUM(DR_AMT_L) - SUM(CR_AMT_L) AS balance FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 1 AND YEAR(GL_DATE) <= 2024 GROUP BY AC_CODE_DTL, AC_DTL_NM HAVING DOC_DATE <= '2024-12-31';"
+    },
+    {
+        "text": "List all purchase bills where the total bill amount exceeds the average purchase amount by more than 20%, including document number and vendor name.",
+        "sql": "SELECT DOC_NO, VNDR_NM FROM PURCHS_BILL_MST_AI_VW WHERE TOTL_BILL_AMT > (SELECT AVG(TOTL_BILL_AMT) * 1.2 FROM PURCHS_BILL_MST_AI_VW);"
+    },
+    {
+        "text": "Calculate the gross profit for each item sold in sales bills by subtracting total stock cost from total price after discounts.",
+        "sql": "SELECT ITM_CODE AS item_code, SUM(ITM_TOTL_PRICE - ITM_TOTL_DSCNT_AMT - ITM_TOTL_STK_CST) AS gross_profit FROM SALES_BILL_DTL_AI_VW GROUP BY ITM_CODE;"
+    },
+    {
+        "text": "What is the total outgoing quantity and value for items in the 'Raw Materials' category from inventory movements in the first half of 2025?",
+        "sql": "SELECT SUM(OUTGOING_QUANTITY) AS total_quantity, SUM(STOCK_COST) AS total_value FROM INV_V_ITM_MOVMNT_AI WHERE ITEM_CATEGORY_NAME LIKE '%Raw Materials%' AND INCOMING_OUTGOING = 'Outgoing' AND DOCUMENT_DATE BETWEEN '2025-01-01' AND '2025-06-30';"
+    },
+    {
+        "text": "Provide the aging analysis for customer receivables, grouping by 0-30 days, 31-60 days, etc., based on due dates from sales bills.",
+        "sql": "SELECT CSTMR_NM, CASE WHEN DATEDIFF(DAY, DOC_DUE_DATE, GETDATE()) <= 30 THEN '0-30 days' WHEN DATEDIFF(DAY, DOC_DUE_DATE, GETDATE()) BETWEEN 31 AND 60 THEN '31-60 days' ELSE 'Over 60 days' END AS aging_bucket, SUM(CRDT_AMT_LOCAL) AS amount FROM SALES_BILL_MST_AI_VW WHERE PYMNT_CRDT > 0 GROUP BY CSTMR_NM, aging_bucket;"
+    },
+    {
+        "text": "Find the variance between standard and actual total cost for completed work orders (status 3) in MRP.",
+        "sql": "SELECT WORK_ORDER_NO, TOTAL_STANDARD_COST - TOTAL_ACTUAL_COST AS cost_variance FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 3;"
+    },
+    {
+        "text": "What is the total discount amount given on purchases for vendors from a specific country, say 'USA', using the vendor name filter?",
+        "sql": "SELECT SUM(DSCNT_AMT_LOCAL) AS total_discount FROM PURCHS_BILL_MST_AI_VW INNER JOIN INV_V_ITM_MOVMNT_AI ON PURCHS_BILL_MST_AI_VW.DOC_NO = INV_V_ITM_MOVMNT_AI.DOCUMENT_TYPE WHERE UPPER(MANUFACTURE_COUNTRY) LIKE UPPER('%USA%');"
+    },
+    {
+        "text": "List employees who have processed sales bills with total amounts over 10000 in local currency, including employee name and total processed.",
+        "sql": "SELECT EMP_L_NM AS employee_name, SUM(TOTL_BILL_AMT_LOCAL) AS total_processed FROM GNR_EMP_AI_VW INNER JOIN SALES_BILL_MST_AI_VW ON GNR_EMP_AI_VW.EMP_NO = SALES_BILL_MST_AI_VW.EMP_CODE GROUP BY EMP_L_NM HAVING total_processed > 10000;"
+    },
+    {
+        "text": "Calculate the inventory turnover ratio for each item, using average inventory and cost of goods sold from sales details.",
+        "sql": "WITH avg_inv AS (SELECT ITEM_CODE, AVG(AVAILABLE_QUANTITY) AS avg_quantity FROM INV_V_ITM_MOVMNT_AI GROUP BY ITEM_CODE), cogs AS (SELECT ITM_CODE, SUM(ITM_TOTL_STK_CST) AS total_cogs FROM SALES_BILL_DTL_AI_VW GROUP BY ITM_CODE) SELECT avg_inv.ITEM_CODE, total_cogs / avg_quantity AS turnover_ratio FROM avg_inv INNER JOIN cogs ON avg_inv.ITEM_CODE = cogs.ITM_CODE;"
+    },
+    {
+        "text": "What is the total credit amount for bank accounts (AC_DTL_TYP = 2) in foreign currency for transactions in the last year?",
+        "sql": "SELECT SUM(CR_AMT_F) AS total_credit_foreign FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 2 AND DOC_DATE >= DATEADD(YEAR, -1, GETDATE());"
+    },
+    {
+        "text": "Provide a report on sales returns by reason type, including total return amount and count of returns for each reason.",
+        "sql": "SELECT RESON_TYP AS reason_type, SUM(TOTL_BILL_AMT_LOCAL) AS total_return, COUNT(DOC_NO) AS return_count FROM SALES_RT_BILL_MST_AI_VW GROUP BY RESON_TYP;"
+    },
+    {
+        "text": "Find the top 3 items by net incoming quantity in inventory movements for a specific warehouse code 'WH001'.",
+        "sql": "SELECT ITEM_CODE, SUM(NET_INCOMING_QUANTITY) AS net_incoming FROM INV_V_ITM_MOVMNT_AI WHERE WAREHOUSE_CODE = 'WH001' GROUP BY ITEM_CODE ORDER BY net_incoming DESC LIMIT 3;"
+    },
+    {
+        "text": "Calculate the total other amounts and taxes for purchases where payment method is credit, grouped by vendor.",
+        "sql": "SELECT VNDR_NM AS vendor_name, SUM(OTHR_AMT_LOCAL + TAX_AMT_LOCAL) AS total_other_tax FROM PURCHS_BILL_MST_AI_VW WHERE PYMNT_CRDT > 0 GROUP BY VNDR_NM;"
+    },
+    {
+        "text": "What is the balance sheet total for assets (assuming balance sheet accounts are AC_TYP=1), summing debits minus credits for each account.",
+        "sql": "SELECT AC_L_NM AS account_name, SUM(DR_AMT_L - CR_AMT_L) AS balance FROM GLS_PST_AI_VW WHERE AC_TYP = 1 GROUP BY AC_L_NM;"
+    },
+    {
+        "text": "What is the total debit amount in local currency for all profit and loss accounts in the general ledger postings for the year 2024?",
+        "sql": "SELECT SUM(DR_AMT_L) AS total_debit FROM GLS_PST_AI_VW WHERE AC_TYP = 0 AND DOC_DATE BETWEEN '2024-01-01' AND '2024-12-31';"
+    },
+    {
+        "text": "List the top 5 customers by outstanding credit amount, calculated as the difference between debit and credit in local currency, from the general ledger where the account detail type is for customers.",
+        "sql": "SELECT AC_CODE_DTL AS customer_code, AC_DTL_NM AS customer_name, SUM(DR_AMT_L - CR_AMT_L) AS outstanding FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 3 GROUP BY AC_CODE_DTL, AC_DTL_NM ORDER BY outstanding DESC LIMIT 5;"
+    },
+    {
+        "text": "Calculate the total purchase amount in local currency for vendor code 'VND001' in the purchase bills master table, including discounts and taxes, for the fiscal year 2023.",
+        "sql": "SELECT SUM(TOTL_BILL_AMT_LOCAL) AS total_purchase FROM PURCHS_BILL_MST_AI_VW WHERE VNDR_CODE = 'VND001' AND YR_NO = 2023;"
+    },
+    {
+        "text": "What is the average item cost in the inventory movements for items in the main group code 'MG001', considering only incoming quantities greater than zero?",
+        "sql": "SELECT AVG(STOCK_COST / INCOMING_QUANTITY) AS average_cost FROM INV_V_ITM_MOVMNT_AI WHERE MAIN_GROUP_CODE = 'MG001' AND INCOMING_QUANTITY > 0;"
+    },
+    {
+        "text": "Retrieve the total sales return amount in local currency for the sales return bills where the reason type is 'Defective' and the document date is in 2024.",
+        "sql": "SELECT SUM(TOTL_BILL_AMT_LOCAL) AS total_returns FROM SALES_RT_BILL_MST_AI_VW WHERE RESON_TYP = 'Defective' AND DOC_DATE BETWEEN '2024-01-01' AND '2024-12-31';"
+    },
+    {
+        "text": "Find the total cash sales amount from the sales bill master for warehouse code 'WH001' and group by month in 2024.",
+        "sql": "SELECT DATE_TRUNC('month', DOC_DATE) AS month, SUM(CSH_AMT) AS total_cash_sales FROM SALES_BILL_MST_AI_VW WHERE WRHS_CODE = 'WH001' AND DOC_DATE BETWEEN '2024-01-01' AND '2024-12-31' GROUP BY month;"
+    },
+    {
+        "text": "What is the net inventory value added tax amount for outgoing items in the inventory movements table for item category 'CAT001'?",
+        "sql": "SELECT SUM(VALUE_ADDED_TAX_AMOUNT) AS net_vat FROM INV_V_ITM_MOVMNT_AI WHERE OUTGOING_QUANTITY > 0 AND ITEM_CATEGORY_NUMBER = 'CAT001';"
+    },
+    {
+        "text": "List all employees with their total debit amounts from the general ledger where the account detail type is for employees, joined with employee data.",
+        "sql": "SELECT e.EMP_NO, e.EMP_L_NM, SUM(g.DR_AMT_L) AS total_debit FROM GNR_EMP_AI_VW e JOIN GLS_PST_AI_VW g ON e.EMP_NO = g.AC_CODE_DTL WHERE g.AC_DTL_TYP = 7 GROUP BY e.EMP_NO, e.EMP_L_NM;"
+    },
+    {
+        "text": "Calculate the total actual cost variance from standard cost in the MRP work orders for finished products completed in 2024.",
+        "sql": "SELECT SUM(TOTAL_ACTUAL_COST - TOTAL_STANDARD_COST) AS cost_variance FROM MRP_WORK_ORDER_AI_VW WHERE ITEM_CLASS = 1 AND WORK_ORDER_STATUS = 3 AND WORK_ORDER_DATE BETWEEN '2024-01-01' AND '2024-12-31';"
+    },
+    {
+        "text": "What is the total discount amount given in sales bills for customers in region 'RGN001', joining master and detail tables?",
+        "sql": "SELECT SUM(d.ITM_TOTL_DSCNT_AMT) AS total_discount FROM SALES_BILL_MST_AI_VW m JOIN SALES_BILL_DTL_AI_VW d ON m.DOC_NO = d.DOC_NO AND m.DOC_SRL = d.DOC_SRL WHERE m.RGN_NO = 'RGN001';"
+    },
+    {
+        "text": "Retrieve the balance sheet accounts' total credit amount in foreign currency for opening balances only.",
+        "sql": "SELECT SUM(CR_AMT_F) AS total_credit FROM GLS_PST_AI_VW WHERE AC_TYP = 1 AND IS_OPN_BLNC = TRUE;"
+    },
+    {
+        "text": "Find the total tax amount collected from purchase bills where the tax category is 'TAX001' and payment method is cash.",
+        "sql": "SELECT SUM(TAX_AMT_LOCAL) AS total_tax FROM PURCHS_BILL_MST_AI_VW WHERE TAX_CTGRY_NO = 'TAX001' AND PYMNT_CSH > 0;"
+    },
+    {
+        "text": "What is the average delivery quantity per work order for semi-products from production planning source?",
+        "sql": "SELECT AVG(DELIVER_QTY) AS average_delivery FROM MRP_WORK_ORDER_AI_VW WHERE ITEM_CLASS = 2 AND WORK_ORDER_SOURCE = 1;"
+    },
+    {
+        "text": "List the top 10 items by net sales quantity from inventory movements, filtered by warehouse group 'WGRP001'.",
+        "sql": "SELECT ITEM_CODE, ITEM_NAME, SUM(NET_SALES_QUANTITY) AS total_sales_qty FROM INV_V_ITM_MOVMNT_AI WHERE WAREHOUSE_GROUP_CODE = 'WGRP001' GROUP BY ITEM_CODE, ITEM_NAME ORDER BY total_sales_qty DESC LIMIT 10;"
+    },
+    {
+        "text": "Calculate the total other amounts in sales returns for items with expiration dates in 2025, joining master and detail.",
+        "sql": "SELECT SUM(d.ITM_OTHR_CHRG_AMT) AS total_other FROM SALES_RT_BILL_MST_AI_VW m JOIN SALES_RT_BILL_DTL_AI_VW d ON m.DOC_NO = d.DOC_NO AND m.DOC_SRL = d.DOC_SRL WHERE d.EXP_DATE BETWEEN '2025-01-01' AND '2025-12-31';"
+    },
+    {
+        "text": "What is the cash movement summary for cashier code 'CSH001', showing debit and credit sums from general ledger postings.",
+        "sql": "SELECT SUM(DR_AMT_L) AS total_debit, SUM(CR_AMT_L) AS total_credit FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 1 AND AC_CODE_DTL = 'CSH001';"
+    },
+    {
+        "text": "Retrieve the total available quantity and stock cost for items using batch numbers in the inventory movements.",
+        "sql": "SELECT ITEM_CODE, ITEM_NAME, SUM(AVAILABLE_QUANTITY) AS total_available, SUM(STOCK_COST) AS total_cost FROM INV_V_ITM_MOVMNT_AI WHERE USING_BATCH_NUMBER = TRUE GROUP BY ITEM_CODE, ITEM_NAME;"
+    },
+    {
+        "text": "Find the total credit sales amount for salesman 'SMAN001' in the sales bill master for the quarter ending March 2024.",
+        "sql": "SELECT SUM(CRDT_AMT) AS total_credit_sales FROM SALES_BILL_MST_AI_VW WHERE SMAN_CODE = 'SMAN001' AND DOC_DATE BETWEEN '2024-01-01' AND '2024-03-31';"
+    },
+    {
+        "text": "Calculate the variance in labor costs (actual minus standard) for all closed work orders in MRP.",
+        "sql": "SELECT WORK_ORDER_NO, (LABOR_ACTUAL_COST - LABOR_STANDARD_COST) AS labor_variance FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 4;"
+    },
+    {
+        "text": "List all vendors with their total payment amounts via bank, grouped by currency, from purchase bills.",
+        "sql": "SELECT VNDR_CODE, VNDR_NM, CUR_CODE, SUM(BNK_AMT_LOCAL) AS total_bank_payment FROM PURCHS_BILL_MST_AI_VW WHERE PYMNT_BNK > 0 GROUP BY VNDR_CODE, VNDR_NM, CUR_CODE;"
+    },
+    {
+        "text": "What is the total cash sales amount for all sales bills in the year 2023, grouped by customer name?",
+        "sql": "SELECT CSTMR_NM, SUM(CSH_AMT) AS total_cash_sales FROM SALES_BILL_MST_AI_VW WHERE YR_NO = 2023 GROUP BY CSTMR_NM;"
+    },
+    {
+        "text": "Calculate the net sales amount after deducting discounts and taxes for each item in sales bills during January 2024.",
+        "sql": "SELECT sbd.ITM_CODE, SUM(sbd.ITM_TOTL_AMT - sbd.ITM_TOTL_DSCNT_AMT - sbd.ITM_TOTL_TAX_AMT) AS net_sales FROM SALES_BILL_DTL_AI_VW sbd JOIN SALES_BILL_MST_AI_VW sbm ON sbd.DOC_NO = sbm.DOC_NO AND sbd.DOC_SRL = sbm.DOC_SRL WHERE sbm.DOC_DATE BETWEEN '2024-01-01' AND '2024-01-31' GROUP BY sbd.ITM_CODE;"
+    },
+    {
+        "text": "List the top 5 vendors by total purchase amount in local currency for purchases made in the last quarter, including their names.",
+        "sql": "SELECT VNDR_NM, SUM(TOTL_BILL_AMT_LOCAL) AS total_purchases FROM PURCHS_BILL_MST_AI_VW WHERE DOC_DATE >= DATEADD(QUARTER, -1, GETDATE()) GROUP BY VNDR_NM ORDER BY total_purchases DESC LIMIT 5;"
+    },
+    {
+        "text": "What is the outstanding balance for each customer, calculated as total credit sales minus payments received, using the general ledger postings.",
+        "sql": "SELECT AC_DTL_NM AS customer_name, SUM(CASE WHEN AC_DTL_TYP = 3 THEN CR_AMT_L - DR_AMT_L ELSE 0 END) AS outstanding_balance FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 3 GROUP BY AC_DTL_NM HAVING outstanding_balance > 0;"
+    },
+    {
+        "text": "Generate a report of cash movements for cash accounts in the month of October 2025, showing debit and credit amounts per document.",
+        "sql": "SELECT DOC_NO, DOC_DATE, DR_AMT_L AS debit, CR_AMT_L AS credit FROM GLS_PST_AI_VW WHERE AC_DTL_TYP = 1 AND DOC_DATE BETWEEN '2025-10-01' AND '2025-10-31' ORDER BY DOC_DATE;"
+    },
+    {
+        "text": "Compute the total value added tax amount collected from sales and paid in purchases for the fiscal year 2024.",
+        "sql": "SELECT SUM(sbd.ITM_TOTL_TAX_AMT) AS sales_vat_collected, SUM(pbd.ITM_TOTL_TAX_AMT) AS purchases_vat_paid FROM SALES_BILL_DTL_AI_VW sbd JOIN SALES_BILL_MST_AI_VW sbm ON sbd.DOC_NO = sbm.DOC_NO AND sbd.DOC_SRL = sbm.DOC_SRL JOIN PURCHS_BILL_DTL_AI_VW pbd ON 1=1 JOIN PURCHS_BILL_MST_AI_VW pbm ON pbd.DOC_NO = pbm.DOC_NO AND pbd.DOC_SRL = pbm.DOC_SRL WHERE sbm.YR_NO = 2024 AND pbm.YR_NO = 2024;"
+    },
+    {
+        "text": "What is the average stock cost per item in inventory movements for items in the 'Electronics' group during 2023?",
+        "sql": "SELECT ITEM_CODE, AVG(STOCK_COST) AS average_stock_cost FROM INV_V_ITM_MOVMNT_AI WHERE ITEM_GROUP_CLASS_NAME LIKE UPPER('%Electronics%') AND DOCUMENT_DATE BETWEEN '2023-01-01' AND '2023-12-31' GROUP BY ITEM_CODE;"
+    },
+    {
+        "text": "Provide a detailed ledger for a specific account code 'ACC001' showing all debits and credits in local currency ordered by date.",
+        "sql": "SELECT DOC_DATE, DOC_NO, DOC_DESC, DR_AMT_L AS debit, CR_AMT_L AS credit FROM GLS_PST_AI_VW WHERE AC_CODE = 'ACC001' ORDER BY DOC_DATE;"
+    },
+    {
+        "text": "Calculate the gross profit by subtracting total purchase costs from total sales amounts for the year 2024.",
+        "sql": "SELECT (SUM(sbm.TOTL_BILL_AMT) - SUM(pbm.TOTL_BILL_AMT)) AS gross_profit FROM SALES_BILL_MST_AI_VW sbm JOIN PURCHS_BILL_MST_AI_VW pbm ON sbm.YR_NO = pbm.YR_NO WHERE sbm.YR_NO = 2024;"
+    },
+    {
+        "text": "List all employees with their total debit and credit transactions if they appear in the general ledger as employees.",
+        "sql": "SELECT e.EMP_L_NM, SUM(g.DR_AMT_L) AS total_debit, SUM(g.CR_AMT_L) AS total_credit FROM GNR_EMP_AI_VW e JOIN GLS_PST_AI_VW g ON e.EMP_NO = g.AC_CODE_DTL WHERE g.AC_DTL_TYP = 7 GROUP BY e.EMP_L_NM;"
+    },
+    {
+        "text": "What is the total discount given on sales returns compared to original sales discounts for the month of September 2025?",
+        "sql": "SELECT SUM(srbm.DSCNT_AMT) AS returns_discount, SUM(sbm.DSCNT_AMT) AS sales_discount FROM SALES_RT_BILL_MST_AI_VW srbm JOIN SALES_BILL_MST_AI_VW sbm ON srbm.DOC_DATE = sbm.DOC_DATE WHERE srbm.DOC_DATE BETWEEN '2025-09-01' AND '2025-09-30';"
+    },
+    {
+        "text": "Generate an aging report for vendor payables, categorizing outstanding amounts into 0-30, 31-60, 61+ days as of current date.",
+        "sql": "SELECT VNDR_NM, SUM(CASE WHEN DATEDIFF(DAY, DOC_DUE_DATE, GETDATE()) <= 30 THEN CR_AMT_L ELSE 0 END) AS aging_0_30, SUM(CASE WHEN DATEDIFF(DAY, DOC_DUE_DATE, GETDATE()) BETWEEN 31 AND 60 THEN CR_AMT_L ELSE 0 END) AS aging_31_60, SUM(CASE WHEN DATEDIFF(DAY, DOC_DUE_DATE, GETDATE()) > 60 THEN CR_AMT_L ELSE 0 END) AS aging_61_plus FROM GLS_PST_AI_VW g JOIN PURCHS_BILL_MST_AI_VW p ON g.DOC_NO = p.DOC_NO WHERE g.AC_DTL_TYP = 4 AND g.CR_AMT_L > g.DR_AMT_L GROUP BY VNDR_NM;"
+    },
+    {
+        "text": "Calculate the inventory turnover ratio for each item based on average stock cost and sales cost for 2024.",
+        "sql": "SELECT i.ITEM_CODE, (SUM(sbd.ITM_TOTL_STK_CST) / AVG(i.STOCK_COST)) AS turnover_ratio FROM INV_V_ITM_MOVMNT_AI i JOIN SALES_BILL_DTL_AI_VW sbd ON i.ITEM_CODE = sbd.ITM_CODE JOIN SALES_BILL_MST_AI_VW sbm ON sbd.DOC_NO = sbm.DOC_NO AND sbd.DOC_SRL = sbm.DOC_SRL WHERE sbm.YR_NO = 2024 AND i.DOCUMENT_DATE BETWEEN '2024-01-01' AND '2024-12-31' GROUP BY i.ITEM_CODE;"
+    },
+    {
+        "text": "What is the total actual cost versus standard cost for completed work orders in the MRP system during 2023?",
+        "sql": "SELECT SUM(TOTAL_ACTUAL_COST) AS total_actual, SUM(TOTAL_STANDARD_COST) AS total_standard FROM MRP_WORK_ORDER_AI_VW WHERE WORK_ORDER_STATUS = 3 AND WORK_ORDER_DATE BETWEEN '2023-01-01' AND '2023-12-31';"
+    },
+    {
+        "text": "Provide a summary of currency differences in financial postings for foreign currency transactions in the last year.",
+        "sql": "SELECT CUR_CODE, SUM(DR_AMT_F - DR_AMT_L) AS debit_diff, SUM(CR_AMT_F - CR_AMT_L) AS credit_diff FROM GLS_PST_AI_VW WHERE IS_CRNCY_DFRNC = 1 AND DOC_DATE >= DATEADD(YEAR, -1, GETDATE()) GROUP BY CUR_CODE;"
+    },
+    {
+        "text": "List the balance sheet accounts with their closing balances as of December 31, 2024.",
+        "sql": "SELECT AC_L_NM, SUM(DR_AMT_L - CR_AMT_L) AS closing_balance FROM GLS_PST_AI_VW WHERE AC_TYP = 1 AND DOC_DATE <= '2024-12-31' GROUP BY AC_L_NM;"
+    },
+    {
+        "text": "Calculate the total other amounts and charges in purchases and sales for comparison in 2024.",
+        "sql": "SELECT SUM(pbm.OTHR_AMT) AS purchases_other, SUM(sbm.OTHR_AMT) AS sales_other FROM PURCHS_BILL_MST_AI_VW pbm JOIN SALES_BILL_MST_AI_VW sbm ON pbm.YR_NO = sbm.YR_NO WHERE pbm.YR_NO = 2024;"
+    },
+    {
+        "text": "What is the net incoming quantity and value for inventory items in warehouse 'WH001' during 2025?",
+        "sql": "SELECT ITEM_CODE, SUM(NET_INCOMING_QUANTITY) AS net_incoming_qty, SUM(STOCK_COST * NET_INCOMING_QUANTITY) AS net_value FROM INV_V_ITM_MOVMNT_AI WHERE WAREHOUSE_CODE = 'WH001' AND DOCUMENT_DATE BETWEEN '2025-01-01' AND '2025-12-31' GROUP BY ITEM_CODE;"
+    },
+    {
+        "text": "Generate a report of profit and loss accounts showing total debits and credits for the fiscal period.",
+        "sql": "SELECT AC_L_NM, SUM(DR_AMT_L) AS total_debits, SUM(CR_AMT_L) AS total_credits FROM GLS_PST_AI_VW WHERE AC_TYP = 0 GROUP BY AC_L_NM;"
+    },
+    {
+        "text": "Compare the total sales by salesman with commissions earned, assuming commission percent from sales master.",
+        "sql": "SELECT SMAN_CODE_NM, SUM(TOTL_BILL_AMT) AS total_sales, SUM(TOTL_BILL_AMT * COMM_PRCNT / 100) AS commissions FROM SALES_BILL_MST_AI_VW GROUP BY SMAN_CODE_NM, COMM_PRCNT;"
+    }
+]
