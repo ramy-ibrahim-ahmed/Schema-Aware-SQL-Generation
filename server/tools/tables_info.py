@@ -1,25 +1,35 @@
 import sqlite3
-from ..core.config import get_db_connection
 from ..core.schemas import TableInfo, ColumnInfo, ForeignKeyInfo, TableResult
 
 
-def get_tables_info_structured(table_names: list[str]) -> TableResult:
-    """
-    Securely retrieves schema, foreign keys, and sample rows for specified tables.
+def _format_relations_info(results: TableResult) -> str:
+    output_parts = []
+    if not results:
+        return "No table information to display."
 
-    Args:
-        table_names: A list of table names to query.
-        connection: An active sqlite3 database connection.
+    for table_name, info in results.items():
+        if isinstance(info, str):
+            output_parts.append(f"Table: `{table_name}`\n{info}\n")
+            continue
 
-    Returns:
-        A dictionary mapping each table name to a TableInfo object or an error message.
-    """
+        part = f"Table: `{table_name}`\n"
+        part += f"Schema: {[col.__dict__ for col in info.schema]}\n"
+        if info.foreign_keys:
+            part += f"Foreign Keys: {[fk.__dict__ for fk in info.foreign_keys]}\n"
+
+        sample_cols = list(info.sample_rows[0].keys()) if info.sample_rows else []
+        part += f"Sample Rows (Columns: {sample_cols}):\n{info.sample_rows}"
+        output_parts.append(part)
+
+    return "\n\n".join(output_parts)
+
+
+def get_relations_info(table_names: list[str], db_client) -> str:
     if not table_names:
-        return {}
+        return "No tables provided."
 
-    connection = get_db_connection()
-    connection.row_factory = sqlite3.Row
-    cursor = connection.cursor()
+    db_client.row_factory = sqlite3.Row
+    cursor = db_client.cursor()
 
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
     allowed_tables = {row["name"] for row in cursor.fetchall()}
@@ -59,28 +69,12 @@ def get_tables_info_structured(table_names: list[str]) -> TableResult:
             sample_rows = [dict(zip(column_names, row)) for row in cursor.fetchall()]
 
             results[table_name] = TableInfo(
-                schema=schema_info, foreign_keys=fk_info, sample_rows=sample_rows
+                schema=schema_info,
+                foreign_keys=fk_info,
+                sample_rows=sample_rows,
             )
 
         except sqlite3.Error as e:
             results[table_name] = f"Error retrieving info for table '{table_name}': {e}"
 
-    return results
-
-
-def format_table_info(results: TableResult) -> str:
-    output_parts = []
-    if not results:
-        return "No table information to display."
-
-    for table_name, info in results.items():
-        part = f"Table: `{table_name}`\n"
-        part += f"Schema: {[col.__dict__ for col in info.schema]}\n"
-        if info.foreign_keys:
-            part += f"Foreign Keys: {[fk.__dict__ for fk in info.foreign_keys]}\n"
-
-        sample_cols = list(info.sample_rows[0].keys()) if info.sample_rows else []
-        part += f"Sample Rows (Columns: {sample_cols}):\n{info.sample_rows}"
-        output_parts.append(part)
-
-    return "\n\n".join(output_parts)
+    return _format_relations_info(results)

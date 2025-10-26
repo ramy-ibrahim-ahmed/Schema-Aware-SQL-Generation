@@ -1,0 +1,1 @@
+Respond to the user message using the sql results as a chatting agent.

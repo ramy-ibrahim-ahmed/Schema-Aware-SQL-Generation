@@ -1,10 +1,15 @@
-import sqlite3
+from functools import lru_cache
+from pydantic_settings import BaseSettings
 
-DB_PATH = ""
+
+class Settings(BaseSettings):
+    GEMINI_API_KEY: str
+
+    class Config:
+        env_file = "./server/.env"
+        env_file_encoding = "utf-8"
 
 
-def get_db_connection() -> sqlite3.Connection:
-    try:
-        return sqlite3.connect(DB_PATH)
-    except sqlite3.Error as e:
-        raise e
+@lru_cache()
+def get_settings() -> Settings:
+    return Settings()

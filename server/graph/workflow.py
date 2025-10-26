@@ -1,34 +1,40 @@
+from functools import partial
 from langgraph.graph import StateGraph, END
+from ..agents import IdentifyAgent, RespondAgent, SQLAgent, ExecuteNode
+from ..store.nlp.interface import BaseNLP
+from ..core.enums import AgentNamesEnums
+from .routers import correct_router
+from .state import State
 
 
-workflow = StateGraph(State)
+def init_workflow(db_path, nlp: BaseNLP):
+    identify = partial(IdentifyAgent, nlp=nlp, db_path=db_path)
+    respond = partial(RespondAgent, nlp=nlp)
+    sql = partial(SQLAgent, nlp=nlp)
+    execute = partial(ExecuteNode, db_path=db_path)
 
-workflow.add_node("manager", manager)
-workflow.add_node("identify_relevant_tables", identify_relevant_tables)
-workflow.add_node("generate_sql_query", generate_sql_query)
-workflow.add_node("execute_sql", sql_execution_node)
+    workflow = StateGraph(State)
 
-workflow.set_entry_point("manager")
+    workflow.add_node(AgentNamesEnums.IDENTIFY.value, identify)
+    workflow.add_node(AgentNamesEnums.RESPOND.value, respond)
+    workflow.add_node(AgentNamesEnums.SQL_GENERATE.value, sql)
+    workflow.add_node(AgentNamesEnums.SQL_EXECUTE.value, execute)
 
-workflow.add_conditional_edges(
-    "manager",
-    route_after_manager,
-    {
-        "identify_relevant_tables": "identify_relevant_tables",
-        END: END,
-    },
-)
+    workflow.set_entry_point(AgentNamesEnums.IDENTIFY.value)
+    workflow.add_edge(
+        AgentNamesEnums.IDENTIFY.value, AgentNamesEnums.SQL_GENERATE.value
+    )
+    workflow.add_edge(
+        AgentNamesEnums.SQL_GENERATE.value, AgentNamesEnums.SQL_EXECUTE.value
+    )
+    workflow.add_conditional_edges(
+        AgentNamesEnums.SQL_EXECUTE.value,
+        correct_router,
+        {
+            AgentNamesEnums.RESPOND.value: AgentNamesEnums.RESPOND.value,
+            AgentNamesEnums.SQL_GENERATE.value: AgentNamesEnums.SQL_GENERATE.value,
+        },
+    )
+    workflow.add_edge(AgentNamesEnums.RESPOND.value, END)
 
-workflow.add_edge("identify_relevant_tables", "generate_sql_query")
-workflow.add_edge("generate_sql_query", "execute_sql")
-
-workflow.add_conditional_edges(
-    "execute_sql",
-    should_regenerate_query,
-    {
-        "generate_sql_query": "generate_sql_query",
-        "manager": "manager",
-    },
-)
-
-GRAPH = workflow.compile()
+    return workflow.compile()
