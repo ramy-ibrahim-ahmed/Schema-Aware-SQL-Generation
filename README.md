@@ -52,3 +52,36 @@ Sample Rows (Columns: ['student_id', 'name', 'department_id']):
 ### Technologies
 
 `Gemini-SDK` `LangGraph` `Pydantic` `SQLight` `FastAPI` `Uvicorn`
+
+---
+
+## Modeling
+
+### Gemma3 Text-to-SQL Fine-Tuning with QLoRA
+
+Fine-tuning the google/gemma-3-1b-pt model on a Text-to-SQL task. The training script uses the Hugging Face trl library to perform supervised fine-tuning (SFT) with PEFT (QLoRA) for memory-efficient training.
+
+- Tokenizer: `google/gemma-3-1b-it` (the instruction-tuned tokenizer)
+- Dataset: `philschmid/gretel-synthetic-text-to-sql`
+- Technologies: Hugging Face `transformers`, `datasets`, `peft`, and `trl`
+- Techniques: 4-bit Quantization (QLoRA) via `bitsandbytes`
+
+### Workflow
+
+1. Dataset: Loads the *philschmid/gretel-synthetic-text-to-sql* dataset from the Hugging Face Hub.
+2. Formatting: A custom prompt template is defined to structure the SQL context and the user's question. The dataset is then mapped to this chat format:
+      - System Message: Instructions to be an SQL assistant.
+      - User: Contains the prompt template with the {context} (schema) and {question} (natural language query).
+      - Assistant: Contains the target {sql} query.
+3. Sampling: For demonstration purposes, the script shuffles the dataset, selects 80 samples, and then creates an 80/20 train/test split.
+4. Model Loading:
+      - Loads the google/gemma-3-1b-pt model.
+      - Applies 4-bit quantization to reduce memory usage significantly.
+      - Sets the appropriate torch_dtype (bfloat16 or float16) based on your GPU capability.
+5. Tokenizer: Loads the google/gemma-3-1b-it (Instruction) tokenizer to correctly apply the Gemma chat template.
+6. PEFT (QLoRA) Config:
+      - Sets up LoraConfig to inject adapters into all linear layers.
+      - Saves the lm_head and embed_tokens to ensure they are trained along with the new adapters.
+7. Training Arguments:
+      - Configures SFTConfig with key parameters like max_seq_length, packing=True (for efficiency), per_device_train_batch_size, and QLoRA-specific settings (learning_rate, max_grad_norm, etc.).
+8. Trainer Initialization: Initializes an SFTTrainer object, making it ready for training.
