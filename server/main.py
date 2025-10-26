@@ -4,7 +4,7 @@ from .graph.workflow import init_workflow
 from .store.nlp.factory import NLPFactory
 from .core import get_settings
 
-DB_PATH = r"D:\system\sql\lms.db"
+DB_PATH = r"C:\Users\ramyu\code\sql\lms.db"
 SETTINGS = get_settings()
 NLP = NLPFactory.create_nlp(provider="gemini", api_key=SETTINGS.GEMINI_API_KEY)
 
@@ -14,6 +14,7 @@ class QueryRequest(BaseModel):
 
 
 class QueryResponse(BaseModel):
+    context: str
     sql: str
     response: str
 
@@ -27,5 +28,7 @@ async def run_workflow(payload: QueryRequest):
     messages = {"user_message": payload.query}
     response = workflow.invoke(messages)
     return QueryResponse(
-        sql=response.get("sql_query", ""), response=response.get("response", "")
+        context=response.get("relevant_relations", ""),
+        sql=response.get("sql_query", ""),
+        response=response.get("response", ""),
     )
